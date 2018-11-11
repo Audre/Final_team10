@@ -5,7 +5,7 @@
     <title>A & K Photography</title>
     <link rel="stylesheet" type="text/css" href="bootstrapSuperhero.css"/>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -23,25 +23,25 @@
                 <a class="navbar-brand">A & K Photography</a>
             </div>
 
-         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
 
-                    <li><a href="index.html">Home <span class="sr-only">(current)</span></a></li>
+                    <li><a href="index.php">Home <span class="sr-only">(current)</span></a></li>
                     <li class ="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="catalog.html">Catalog
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="catalog.php">Catalog
                             <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="catalog.html">Catalog</a></li>
-                                <li><a href="food.html">Food</a></li>
-                                <li><a href="pets.html">Pets</a></li>
-                                <li><a href="nature.html">Nature</a></li>
-                                <li><a href="concerts.html">Concerts</a></li>
-                                <li><a href="pineapples.html">Pineapple</a></li>
-                                <li><a href="romantic.html">Romantic</a></li>
-                            </ul>
-                        </li>
-                    <li class="active"><a href="about.html">About</a></li>
-                    <li><a href="contact.html">Contact</a></li>
+                        <ul class="dropdown-menu">
+                            <li><a href="catalog.php">Catalog</a></li>
+                            <li><a href="food.php">Food</a></li>
+                            <li><a href="pets.php">Pets</a></li>
+                            <li><a href="nature.php">Nature</a></li>
+                            <li><a href="concerts.php">Concerts</a></li>
+                            <li><a href="pineapples.php">Pineapple</a></li>
+                            <li><a href="romantic.php">Romantic</a></li>
+                        </ul>
+                    </li>
+                    <li class="active"><a href="about.php">About</a></li>
+                    <li><a href="contact.php">Contact</a></li>
                 </ul>
 
             </div>
@@ -64,18 +64,17 @@
                         <br/>
 
                         <div class="img-responsive">
-                            <img src="images/romantic2.jpg" alt="romantic2"
-                                 style="float: left; width: 50%; padding-right: 5%">
-                            <div><p><span class="text-primary" style="font-size: larger">Kierra Johnson </span><br/>
-                                <span >Hello! My name is Kierra and I am a computer science major at
+                            <img src="images/romantic2.jpg" alt="romantic2" class="img-about1"
+                                 >
+                            <div><p><span class="text-primary">Kierra Johnson </span><br/>
+                                    <span >Hello! My name is Kierra and I am a computer science major at
                                     Western Michigan University. Photography is my passion but I also enjoy
                                     moonlight strolls on the beach!</span>
-                        </p></div>
+                                </p></div>
                         </div>
-                        <div class="img-responsive" style="clear: left; padding-top: 10%">
-                            <img src="images/sophie2.jpg" alt="sophie2"
-                                 style="float: right; width: 50%; padding-left: 5%;">
-                            <p><span class="text-primary" style="font-size: larger">Audre Staffen</span> <br/>
+                        <div class="img-responsive clear-float">
+                            <img src="images/sophie2.jpg" alt="sophie2" class="img-about2">
+                            <p><span class="text-primary">Audre Staffen</span> <br/>
                                 <span>Hi, I'm Audre and I am a CS major at Western Michigan University. I am from
                                     Three Rivers, Michigan. I have an adorable dog and cat, of which there are no
                                     shortage of pictures. My passions are music, cars, and animals.

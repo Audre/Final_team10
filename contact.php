@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>A & K Photography</title>
-     <link rel="stylesheet" type="text/css" href="bootstrapSuperhero.css"/>
+    <link rel="stylesheet" type="text/css" href="bootstrapSuperhero.css"/>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<script>
+    <script>
 
-function highlightyellow(x)
-{
-x.style.background="yellow";
-}
+        function highlightyellow(x)
+        {
+            x.style.background="yellow";
+        }
 
-function regular(x)
-{
-x.style.background="white";
-}
+        function regular(x)
+        {
+            x.style.background="white";
+        }
 
-</script>
+    </script>
 </head>
 <body>
 <header>
@@ -36,25 +36,25 @@ x.style.background="white";
                 <a class="navbar-brand">A & K Photography</a>
             </div>
 
-           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
 
-                    <li ><a href="index.html">Home <span class="sr-only">(current)</span></a></li>
+                    <li ><a href="index.php">Home <span class="sr-only">(current)</span></a></li>
                     <li class ="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="catalog.html">Catalog
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="catalog.php">Catalog
                             <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="catalog.html">Catalog</a></li>
-                                <li><a href="food.html">Food</a></li>
-                                <li><a href="pets.html">Pets</a></li>
-                                <li><a href="nature.html">Nature</a></li>
-                                <li><a href="concerts.html">Concerts</a></li>
-                                <li><a href="pineapples.html">Pineapple</a></li>
-                                <li><a href="romantic.html">Romantic</a></li>
-                            </ul>
-                        </li>
-                    <li><a href="about.html">About</a></li>
-                    <li class="active"><a href="contact.html">Contact</a></li>
+                        <ul class="dropdown-menu">
+                            <li><a href="catalog.php">Catalog</a></li>
+                            <li><a href="food.php">Food</a></li>
+                            <li><a href="pets.php">Pets</a></li>
+                            <li><a href="nature.php">Nature</a></li>
+                            <li><a href="concerts.php">Concerts</a></li>
+                            <li><a href="pineapples.php">Pineapple</a></li>
+                            <li><a href="romantic.php">Romantic</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="about.php">About</a></li>
+                    <li class="active"><a href="contact.php">Contact</a></li>
                 </ul>
 
             </div>
@@ -134,48 +134,48 @@ x.style.background="white";
                         </address>
 
                         <div style="padding-left: 18%; padding-top: 10%">
-                        <a href="https://www.facebook.com/" target="_blank" class="fa fa-facebook"></a>
-                        <a href="https://twitter.com/" target="_blank" class="fa fa-twitter"></a>
-                        <a href="https://www.google.com/" target="_blank" class="fa fa-google"></a>
-                        <a href="https://www.linkedin.com/" target="_blank" class="fa fa-linkedin"></a>
-                        <a href="https://www.instagram.com/" target="_blank" class="fa fa-instagram"></a>
-                        <a href="https://www.snapchat.com/" target="_blank" class="fa fa-snapchat-ghost"></a>
+                            <a href="https://www.facebook.com/" target="_blank" class="fa fa-facebook"></a>
+                            <a href="https://twitter.com/" target="_blank" class="fa fa-twitter"></a>
+                            <a href="https://www.google.com/" target="_blank" class="fa fa-google"></a>
+                            <a href="https://www.linkedin.com/" target="_blank" class="fa fa-linkedin"></a>
+                            <a href="https://www.instagram.com/" target="_blank" class="fa fa-instagram"></a>
+                            <a href="https://www.snapchat.com/" target="_blank" class="fa fa-snapchat-ghost"></a>
                         </div>
                     </div>
                 </div>
             </div>
 
         </div>
+        <div class="row">
             <div class="row">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <div id="googleMap" style="height:475px;width:100%;"></div>
-                                <script>
-                                    function myMap() {
-                                        var myCenter = new google.maps.LatLng(42.25584, -85.64177);
-                                        var mapProp = {
-                                            center: myCenter,
-                                            zoom: 12,
-                                            scrollwheel: false,
-                                            draggable: false,
-                                            mapTypeId: google.maps.MapTypeId.ROADMAP
-                                        };
-                                        var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-                                        var marker = new google.maps.Marker({position: myCenter});
-                                        marker.setMap(map);
-                                    }
-                                </script>
-                                <script src="https://maps.googleapis.com/maps/api/js?callback=myMap"></script>
-                            </div>
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div id="googleMap" style="height:475px;width:100%;"></div>
+                            <script>
+                                function myMap() {
+                                    var myCenter = new google.maps.LatLng(42.25584, -85.64177);
+                                    var mapProp = {
+                                        center: myCenter,
+                                        zoom: 12,
+                                        scrollwheel: false,
+                                        draggable: false,
+                                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                                    };
+                                    var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+                                    var marker = new google.maps.Marker({position: myCenter});
+                                    marker.setMap(map);
+                                }
+                            </script>
+                            <script src="https://maps.googleapis.com/maps/api/js?callback=myMap"></script>
                         </div>
-
-
                     </div>
 
+
                 </div>
+
             </div>
+        </div>
     </div>
 </main>
 

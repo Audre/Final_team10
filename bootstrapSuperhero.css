@@ -8561,3 +8561,25 @@ a.list-group-item-danger.active:focus {
     color: white;
     text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
+
+.img-about1 {
+    float: left;
+    width: 50%;
+    padding-right: 5%;
+}
+
+.clear-float {
+    clear: left;
+    padding-top: 10%;
+}
+
+.img-about2 {
+    float: right;
+    width: 50%;
+    padding-left: 5%;
+}
+
+span.text-primary {
+    font-size: larger;
+}
+

@@ -26,22 +26,22 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
 
-                    <li class="active"><a href="index.html">Home <span class="sr-only">(current)</span></a></li>
+                    <li class="active"><a href="index.php">Home <span class="sr-only">(current)</span></a></li>
                     <li class ="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="catalog.html">Catalog
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="catalog.php">Catalog
                             <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="catalog.html">Catalog</a></li>
-                                <li><a href="food.html">Food</a></li>
-                                <li><a href="pets.html">Pets</a></li>
-                                <li><a href="nature.html">Nature</a></li>
-                                <li><a href="concerts.html">Concerts</a></li>
-                                <li><a href="pineapples.html">Pineapple</a></li>
-                                <li><a href="romantic.html">Romantic</a></li>
-                            </ul>
-                        </li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="contact.html">Contact</a></li>
+                        <ul class="dropdown-menu">
+                            <li><a href="catalog.php">Catalog</a></li>
+                            <li><a href="food.php">Food</a></li>
+                            <li><a href="pets.php">Pets</a></li>
+                            <li><a href="nature.php">Nature</a></li>
+                            <li><a href="concerts.php">Concerts</a></li>
+                            <li><a href="pineapples.php">Pineapple</a></li>
+                            <li><a href="romantic.php">Romantic</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="about.php">About</a></li>
+                    <li><a href="contact.php">Contact</a></li>
                 </ul>
 
             </div>
