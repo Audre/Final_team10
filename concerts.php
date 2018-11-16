@@ -44,6 +44,7 @@
                     </li>
                     <li><a href="about.php">About</a></li>
                     <li><a href="contact.php">Contact</a></li>
+                    <li><a href="gallery.php">Gallery</a></li>
                 </ul>
             </div>
         </div>
@@ -77,9 +78,41 @@
         <div class="row">
             <div class="col-lg-3 col-lg-offset-1 col-md-3 col-md-offset-1 col-sm-3 col-sm-offset-1 col-xs-12 ">
                 <div class="thumbnail">
-                    <a href="images/concert1.jpg"> <img src="images/concert1.jpg" alt="concert1" ></a>
+                    <img id="myImg" src="images/concert1.jpg" alt="concert1" >
                 </div>
             </div>
+            <div id="myModal" class="modal">
+                <span class="close">&times;</span>
+                <img class="modal-content" id="img01">
+                <div id="caption"></div>
+            </div>
+
+            <script>
+                var modal = document.getElementById('myModal');
+
+                var img = document.getElementById('myImg');
+                var modalImg = document.getElementById('img01');
+                var captionText = document.getElementById('caption');
+                img.onclick = function () {
+                    modal.style.display = "block";
+                    modalImg.src = this.src;
+                    captionText.innerHTML = this.alt;
+                };
+
+                var span = document.getElementsByClassName("close")[0];
+
+                span.onclick = function () {
+                    modal.style.display = "none";
+                };
+
+                window.onclick = function (event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+
+                };
+
+            </script>
 
             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 ">
                 <div class="thumbnail">
