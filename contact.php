@@ -56,6 +56,9 @@
                     <li><a href="about.php">About</a></li>
                     <li class="active"><a href="contact.php">Contact</a></li>
                     <li><a href="gallery.php">Gallery</a></li>
+                    <li><a href="products.php">Products</a></li>
+                    <li><a href="cameras.php">Cameras</a></li>
+                    <li><a href="cart.php">Cart</a></li>
                 </ul>
 
             </div>
@@ -135,12 +138,12 @@
                         </address>
 
                         <div style="padding-left: 18%; padding-top: 10%">
-                            <a href="https://www.facebook.com/" target="_blank" class="fa fa-facebook"></a>
-                            <a href="https://twitter.com/" target="_blank" class="fa fa-twitter"></a>
-                            <a href="https://www.google.com/" target="_blank" class="fa fa-google"></a>
-                            <a href="https://www.linkedin.com/" target="_blank" class="fa fa-linkedin"></a>
-                            <a href="https://www.instagram.com/" target="_blank" class="fa fa-instagram"></a>
-                            <a href="https://www.snapchat.com/" target="_blank" class="fa fa-snapchat-ghost"></a>
+                            <a href="https://www.facebook.com/" target="_blank" class="fa fa-facebook fa-contact"></a>
+                            <a href="https://twitter.com/" target="_blank" class="fa fa-twitter fa-contact"></a>
+                            <a href="https://www.google.com/" target="_blank" class="fa fa-google fa-contact"></a>
+                            <a href="https://www.linkedin.com/" target="_blank" class="fa fa-linkedin fa-contact"></a>
+                            <a href="https://www.instagram.com/" target="_blank" class="fa fa-instagram fa-contact"></a>
+                            <a href="https://www.snapchat.com/" target="_blank" class="fa fa-snapchat-ghost fa-contact"></a>
                         </div>
                     </div>
                 </div>

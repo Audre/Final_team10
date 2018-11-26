@@ -45,6 +45,9 @@
                     <li><a href="about.php">About</a></li>
                     <li><a href="contact.php">Contact</a></li>
                     <li><a href="gallery.php">Gallery</a></li>
+                    <li><a href="products.php">Products</a></li>
+                    <li><a href="cameras.php">Cameras</a></li>
+                    <li><a href="cart.php">Cart</a></li>
                 </ul>
 
             </div>
