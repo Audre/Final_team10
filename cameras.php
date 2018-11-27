@@ -104,68 +104,78 @@ session_start();
                     echo "<option name='" . $options ."' value='" . $options . "'>" . $options . "</option>";
                 }
                 echo "</select></span>";
-                echo "<button class='add-button' name='submit' type='submit'>Add to Cart</button></span>";
+                echo "<button class='btn btn-primary' name='submit' type='submit'><i class='fa fa-shopping-cart'></i> Add to Cart</button></span>";
                 echo "</form>";
                 echo "</div>";
                 echo "</div>";
                 $row = $stmt->fetch();
             }
     }
-
-                if (!empty($_GET["action"])) {
-                    switch ($_GET["action"]) {
-                        case "add":
-                            if (!empty($_POST["quant"])) {
-                                $query = "SELECT * FROM products WHERE productID=" . $_GET["id"];
-                                print_r($_GET["id"]);
-                                $stmt = $conn->prepare($query);
-                                $num = $stmt->execute();
-                                if ($num) {
-                                    $productByCode = $stmt->fetch();
-                                    $itemArray = array($productByCode["productID"] => array('name' => $productByCode["name"], 'productID' => $productByCode["productID"], 'quantity' => $_POST["quant"], 'price' => $productByCode["price"], 'image' => $productByCode["thumbnail"]));
-                                    if (!empty($_SESSION["cart"])) {
-                                        if (in_array($_GET["id"], array_keys($_SESSION["cart"]))) {
-                                            foreach ($_SESSION["cart"] as $k => $v) {
-                                                if ($_GET["id"] == $k) {
-                                                    print_r("Key: " . $k);
-                                                    if (empty($_SESSION["cart"][$k]["quantity"])) {
-                                                        $_SESSION["cart"][$k]["quantity"] = 0;
-                                                        print_r("\n");
-                                                        print_r("Quantity: " . $_SESSION["cart"][$k]["quantity"]);
-                                                    }
-                                                    $_SESSION["cart"][$k]["quantity"] += $_POST["quant"];
-                                                    print_r("\n");
-                                                    print_r("quantity: " . $_SESSION["cart"][$k]["quantity"]);
-                                                }
-                                            }
-                                        } else {
-                                            $_SESSION["cart"] = array_merge($_SESSION["cart"], $itemArray);
-                                        }
-                                    } else {
-                                        $_SESSION["cart"] = $itemArray;
-                                    }
-                                }
-
-                            }
-                            break;
-                        case "remove":
-                            if (!empty($_SESSION["cart_item"])) {
-                                foreach ($_SESSION["cart_item"] as $k => $v) {
-                                    if ($_GET["code"] == $k)
-                                        unset($_SESSION["cart_item"][$k]);
-                                    if (empty($_SESSION["cart_item"]))
-                                        unset($_SESSION["cart_item"]);
-                                }
-                            }
-                            break;
-                        case "empty":
-                            unset($_SESSION["cart_item"]);
-                            break;
-                    }
-                }
-            ?>
+    ?>
         </div>
     </div>
+
+    <?php
+
+    if (!empty($_GET["action"])) {
+        switch ($_GET["action"]) {
+            case "add":
+                if (!empty($_POST["quant"])) {
+                    $query = "SELECT * FROM products WHERE productID=" . $_GET["id"];
+                    $stmt = $conn->prepare($query);
+                    $num = $stmt->execute();
+                    if ($num) {
+                        $quantity = $_POST["quant"];
+                        $id = $_GET["id"];
+                        $productByCode = $stmt->fetch();
+                        $itemArray = array($productByCode["productID"] => array('quantity' => $quantity, 'image' => $productByCode["thumbnail"], 'price' => $productByCode["price"], 'productID' => $id, 'name' => $productByCode['name']));
+                        if (!empty($_SESSION["cart"])) {
+                            echo "Before: ";
+                            print_r($itemArray);
+
+                            if (array_key_exists($id, $_SESSION["cart"])) {
+                                echo "here1";
+                                $output = $_SESSION["cart"][$id];
+                                echo "<br/> output:";
+                                print_r($output);
+                                foreach ($_SESSION["cart"] as $key => $value) {
+                                    echo "here2";
+                                    echo "<br/> id: key: <br/>";
+                                    print_r($key);
+                                    if ($id == $key) {
+                                        echo "here3";
+                                        if (empty($_SESSION["cart"][$key]["quantity"])) {
+                                            $_SESSION["cart"][$key]["quantity"] = 0;
+                                            echo "here4";
+                                            print_r($_SESSION["cart"][$key]);
+                                        }
+
+                                        $_SESSION["cart"][$key]["quantity"] += $quantity;
+                                        echo "herealso";
+                                        print_r($_SESSION["cart"][$key]);
+                                    }
+                                }
+                            } else {
+                                $_SESSION["cart"] = $_SESSION["cart"] + $itemArray;
+                                echo "/////////////////////////////////////////////////////";
+                            }
+                        } else {
+                            $_SESSION["cart"] = $itemArray;
+                            echo "*******************************************";
+                        }
+
+
+                    }
+                }
+
+                echo "Cart: <br/>";
+                print_r($_SESSION["cart"]);
+                break;
+        }
+    }
+    unset($_GET['id']);
+
+    ?>
 
 
 </main>
