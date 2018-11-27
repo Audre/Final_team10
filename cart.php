@@ -14,6 +14,16 @@ session_start();
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+     <style>
+        #Product:hover #menu{
+            display: block;
+            position: absolute;
+        }
+        #Catalog:hover #menu1{
+            display: block;
+            position: absolute;
+        }
+    </style>
 </head>
 <body>
 
@@ -34,12 +44,11 @@ session_start();
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-
-                    <li><a href="index.php">Home <span class="sr-only"></span></a></li>
-                    <li class="dropdown">
+                    <li><a href="index.php">Home <span class="sr-only">(current)</span></a></li>
+                    <li  id="Catalog">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="catalog.php">Catalog
                             <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu" id="menu1">
                             <li><a href="catalog.php">Catalog</a></li>
                             <li><a href="food.php">Food</a></li>
                             <li><a href="pets.php">Pets</a></li>
@@ -52,24 +61,28 @@ session_start();
                     <li><a href="about.php">About</a></li>
                     <li><a href="contact.php">Contact</a></li>
                     <li><a href="gallery.php">Gallery</a></li>
-                    <li><a href="products.php">Products</a></li>
-                    <li><a href="cameras.php">Cameras</a></li>
+                    <li  id="Product">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="products.php">Products
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu" id="menu">
+                            <li><a href="cameras.php">Cameras & Accessories</a></li>
+                            <li><a href="#">Lens</a></li>
+                            <li><a href="#">Filters</a></li>
+                        </ul>
+                    </li>
                     <li class="active"><a href="cart.php">Cart</a></li>
                 </ul>
-
-            </div>
+        </div>
         </div>
     </nav>
 </header>
 <main>
     <?php
-
     if (!empty($_GET["action"])) {
         switch ($_GET["action"]) {
             case "empty":
                 unset($_SESSION["cart"]);
                 break;
-
             case "remove":
                 if (!empty($_SESSION["cart"])) {
                     foreach ($_SESSION["cart"] as $k => $v) {
@@ -82,10 +95,8 @@ session_start();
                 break;
         }
     }
-
     echo "<div id=\"shopping-cart\">";
     echo "<div class=\"txt-heading\">Shopping Cart</div>";
-
     echo "<a id=\"btnEmpty\" href=\"cart.php?action=empty\">Empty Cart</a>";
     if (isset($_SESSION["cart"])) {
         $total_quantity = 0;
@@ -139,7 +150,6 @@ session_start();
     } else {
         echo "<div class=\"no-records\">Your Cart is Empty</div>";
     }
-
     ?>
 
 </main>

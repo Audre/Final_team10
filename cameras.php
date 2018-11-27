@@ -11,6 +11,16 @@ session_start();
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+     <style>
+        #Product:hover #menu{
+            display: block;
+            position: absolute;
+        }
+        #Catalog:hover #menu1{
+            display: block;
+            position: absolute;
+        }
+    </style>
 </head>
 <body>
 
@@ -27,15 +37,13 @@ session_start();
                 </button>
                 <a class="navbar-brand">A & K Photography</a>
             </div>
-
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-
-                    <li><a href="index.php">Home <span class="sr-only"></span></a></li>
-                    <li class ="dropdown">
+                    <li><a href="index.php">Home <span class="sr-only">(current)</span></a></li>
+                    <li id="Catalog">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="catalog.php">Catalog
                             <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu" id="menu1">
                             <li><a href="catalog.php">Catalog</a></li>
                             <li><a href="food.php">Food</a></li>
                             <li><a href="pets.php">Pets</a></li>
@@ -48,12 +56,18 @@ session_start();
                     <li><a href="about.php">About</a></li>
                     <li><a href="contact.php">Contact</a></li>
                     <li><a href="gallery.php">Gallery</a></li>
-                    <li><a href="products.php">Products</a></li>
-                    <li class="active"><a href="cameras.php">Cameras</a></li>
+                    <li class="active"  id="Product">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="products.php">Products
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu" id="menu">
+                            <li class="active"><a href="cameras.php">Cameras & Accessories</a></li>
+                            <li><a href="#">Lens</a></li>
+                            <li><a href="#">Filters</a></li>
+                        </ul>
+                    </li>
                     <li><a href="cart.php">Cart</a></li>
                 </ul>
-
-            </div>
+        </div>
         </div>
     </nav>
 </header>
@@ -72,14 +86,12 @@ session_start();
             $row = $stmt->fetch();
             $category = ucfirst($row["category"]);
             echo "<h1 class='text-center content-heading'>" . $category . "s</h1>";
-
             for ($i = 0; $i < $num; $i++) {
                 $name = $row["name"];
                 echo "<div class='col-lg-10 col-lg-offset-1 col-md-10 col-sm-10 col-xs-12 product-thumbnail '>";
                 echo "<h3 class='text-center'>" . $name . "</h3> <br/>";
                 echo "<div class=\"col-lg-3 col-lg-offset-1 col-md-4 col-sm-5 col-xs-12 \">";
                 echo "<img class=\"product-thumbnail img-responsive\" src=\"images/products/" . $row["imagePath"] . "\"></div>";
-
                 $description = $row["description"];
                 echo "<div class=\"col-lg-5 col-md-4 col-sm-5 col-xs-12 \">";
                 echo "<p style='padding-top:75px'>". $description . "</p><br/>";
@@ -88,14 +100,11 @@ session_start();
                 echo "<span class='fa fa-star unchecked'></span>";
                 echo "<span class='fa fa-star unchecked'></span>";
                 echo "<span class='fa fa-star unchecked'></span>";
-
                 $storageAmount = $row["unitsInStorage"];
                 $price = number_format($row["price"], 2);
                 echo "<span><h3>$" . $price . "</h3>";
                 echo "<p>Total Items: ". $storageAmount . "</p>";
-
                 $productID = $row["productID"];
-
                 echo "<form action='cameras.php?action=add&id=" . $productID . "&quant=' method='POST'>";
                 echo "<span>";
                 echo "<select class='selectContainer' name='quant'>";
@@ -116,7 +125,6 @@ session_start();
     </div>
 
     <?php
-
     if (!empty($_GET["action"])) {
         switch ($_GET["action"]) {
             case "add":
@@ -132,7 +140,6 @@ session_start();
                         if (!empty($_SESSION["cart"])) {
                             echo "Before: ";
                             print_r($itemArray);
-
                             if (array_key_exists($id, $_SESSION["cart"])) {
                                 echo "here1";
                                 $output = $_SESSION["cart"][$id];
@@ -149,7 +156,6 @@ session_start();
                                             echo "here4";
                                             print_r($_SESSION["cart"][$key]);
                                         }
-
                                         $_SESSION["cart"][$key]["quantity"] += $quantity;
                                         echo "herealso";
                                         print_r($_SESSION["cart"][$key]);
@@ -163,18 +169,14 @@ session_start();
                             $_SESSION["cart"] = $itemArray;
                             echo "*******************************************";
                         }
-
-
                     }
                 }
-
                 echo "Cart: <br/>";
                 print_r($_SESSION["cart"]);
                 break;
         }
     }
     unset($_GET['id']);
-
     ?>
 
 

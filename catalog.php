@@ -9,6 +9,17 @@
     <!--   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
     <!-- Bootstrap JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <style>
+        #Product:hover #menu{
+            display: block;
+            position: absolute;
+        }
+        #Catalog:hover #menu1{
+            display: block;
+            position: absolute;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -27,10 +38,10 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li><a href="index.php">Home <span class="sr-only">(current)</span></a></li>
-                    <li class ="dropdown active">
+                    <li class ="dropdown active" id="Catalog">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="catalog.php">Catalog
                             <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu" id="menu1">
                             <li class="active "><a href="catalog.php">Catalog</a></li>
                             <li><a href="food.php">Food</a></li>
                             <li><a href="pets.php">Pets</a></li>
@@ -43,12 +54,17 @@
                     <li><a href="about.php">About</a></li>
                     <li><a href="contact.php">Contact</a></li>
                     <li><a href="gallery.php">Gallery</a></li>
-                    <li><a href="products.php">Products</a></li>
-                    <li><a href="cameras.php">Cameras</a></li>
+                    <li  id="Product">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="products.php">Products
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu" id="menu">
+                            <li><a href="cameras.php">Cameras & Accessories</a></li>
+                            <li><a href="#">Lens</a></li>
+                            <li><a href="#">Filters</a></li>
+                        </ul>
+                    </li>
                     <li><a href="cart.php">Cart</a></li>
                 </ul>
-
-            </div>
         </div>
     </nav>
 </header>
