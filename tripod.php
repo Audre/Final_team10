@@ -75,7 +75,7 @@ session_start();
 </header>
 <main>
     <?php
-    $query = "SELECT * FROM products ";
+   $query = "SELECT * FROM products WHERE category='tripod' ";
     $stmt = $conn->prepare($query);
     $stmt->execute();
     $num = $stmt->rowCount();
