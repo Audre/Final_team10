@@ -75,7 +75,7 @@ session_start();
 </header>
 <main>
     <?php
-    $query = "SELECT * FROM products ";
+   $query = "SELECT * FROM products WHERE category='lens' ";
     $stmt = $conn->prepare($query);
     $stmt->execute();
     $num = $stmt->rowCount();
@@ -104,7 +104,7 @@ session_start();
                 echo "<span class='fa fa-star unchecked'></span>";
                 $storageAmount = $row["unitsInStorage"];
                 $price = number_format($row["price"], 2);
-                echo "<span><h3>\xf0\x9f\x8d\x8d" . $price . "</h3>";
+                echo "<span><h3>$" . $price . "</h3>";
                 echo "<p>Total Items: ". $storageAmount . "</p>";
                 $productID = $row["productID"];
                 echo "<form action='cameras.php?action=add&id=" . $productID . "&quant=' method='POST'>";
