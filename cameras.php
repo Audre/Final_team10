@@ -91,7 +91,7 @@ session_start();
 
                 $storageAmount = $row["unitsInStorage"];
                 $price = number_format($row["price"], 2);
-                echo "<span><h3>$" . $price . "</h3>";
+                echo "<span><h3>\xf0\x9f\x8d\x8d" . $price . "</h3>";
                 echo "<p>Total Items: ". $storageAmount . "</p>";
 
                 $productID = $row["productID"];
