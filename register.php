@@ -78,7 +78,8 @@ if (isset($_POST["submit"])) {
     }
 
     if (count($error) == 0) {
-        $password = md5($password);
+
+        $password = password_hash($password, PASSWORD_DEFAULT);
 
         $insert_query = "INSERT INTO users (first_name, last_name, email, password) 
                   VALUES('$first_name', '$last_name', '$email', '$password')";
@@ -90,7 +91,8 @@ if (isset($_POST["submit"])) {
             $_SESSION["first_name"] = $first_name;
             $_SESSION["last_name"] = $last_name;
             $_SESSION["success"] = "You are now logged in.";
-            //header('Location: index.php');
+            $_SESSION["logged_in"] = true;
+            header('Location: account.php');
         }
 
     }

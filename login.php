@@ -1,6 +1,55 @@
 <?php
 require_once("Database.php");
 session_start();
+
+function test_input($data){
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+
+//$_SESSION["error"] = array();
+//$error = $_SESSION["error"];
+$error = array();
+$first_name = "";
+$last_name = "";
+$email = "";
+
+if (isset($_POST["login"])) {
+    $email = $_POST["email"];
+    $email = test_input($email);
+    $password = $_POST["password"];
+
+    if (empty($email)) {
+        array_push($error, "Email is required.");
+    }
+
+    if (empty($password)) {
+        array_push($error, "Password is required");
+    }
+
+    $query = "SELECT * FROM users WHERE email='" . $email. "'";
+    $stmt = $conn->prepare($query);
+    $num = $stmt->execute();
+
+    if ($num) {
+        echo "blah";
+        $result = $stmt->fetch();
+        $password_check = password_verify($password, $result["password"]);
+        if ($password_check) {
+            $_SESSION["email"] = $email;
+            $_SESSION["first_name"] = $result["first_name"];
+            $_SESSION["last_name"] = $result["last_name"];
+            $_SESSION["success"] = "You are now logged in.";
+            $_SESSION["logged_in"] = true;
+            header('Location: account.php');
+        } else {
+            echo "Passwords do not match";
+        }
+    }
+
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -72,8 +121,8 @@ session_start();
     <div class="modal-dialog">
         <div class="loginmodal-container">
             <h1>Login to Your Account</h1><br/>
-            <form>
-                <input type="text" name="user" placeholder="Username">
+            <form action="login.php" method="POST">
+                <input required type="text" name="email" placeholder="Email">
                 <input type="password" name="password" placeholder="Password">
                 <input type="submit" name="login" class="login loginmodal-submit" value="Login">
             </form>
@@ -83,33 +132,6 @@ session_start();
             </div>
         </div>
     </div>
-
-    <?php
-    $error = array();
-    if (isset($_POST["submit"])) {
-        if (empty($_POST["username"])) {
-            $error[] = "Username required.";
-        }
-        if (empty($_POST["password"])){
-            $error[] = "Password required.";
-        }
-
-        if (!$error) {
-            $username = $_POST["username"];
-            $password = $_POST["password"];
-            $username = test_input($username);
-            $password = test_input($password);
-        }
-    }
-
-    function test_input($data) {
-        $data = trim($data);
-        $data = stripslashes($data);
-        $data = htmlspecialchars($data);
-        return $data;
-    }
-
-    ?>
 
 </main>
 
