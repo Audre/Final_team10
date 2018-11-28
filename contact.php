@@ -71,7 +71,6 @@
                             <span class="caret"></span></a>
                         <ul class="dropdown-menu" id="menu">
                             <li><a href="cameras.php">Cameras & Accessories</a></li>
-                            <li><a href="cameras.php">Cameras & Accessories</a></li>
                             <li><a href="lens.php">Lens</a></li>
                             <li><a href="filters.php">Filters</a></li>
                             <li><a href="tripods.php">Tripods</a></li>
