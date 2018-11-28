@@ -8895,7 +8895,7 @@ td a {
     position: relative;
 }
 
-.loginmodal-container input[type=text], input[type=password] {
+.loginmodal-container input[type=text], input[type=password], input[type=email] {
     height: 44px;
     font-size: 16px;
     width: 100%;
@@ -8910,7 +8910,7 @@ td a {
     -moz-box-sizing: border-box;
 }
 
-.loginmodal-container input[type=text]:hover, input[type=password]:hover {
+.loginmodal-container input[type=text]:hover, input[type=password]:hover, input[type=email]:hover {
     border: 1px solid #b9b9b9;
     border-top: 1px solid #a0a0a0;
     -moz-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
@@ -8966,4 +8966,24 @@ td a {
 
 .hr {
     border-color: #666;
+}
+
+/* ************************************************ */
+
+.error {
+    width: 92%;
+    margin: 0px auto;
+    padding: 10px;
+    border: 1px solid #a94442;
+    color: #a94442;
+    background: #f2dede;
+    border-radius: 5px;
+    text-align: left;
+}
+
+.success {
+    color: #3c763d;
+    background: #dff0d8;
+    border: 1px solid #3c763d;
+    margin-bottom: 20px;
 }

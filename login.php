@@ -79,7 +79,7 @@ session_start();
             </form>
 
             <div class="login-help">
-                <a href="#">Register</a> - <a href="#">Forgot Password</a>
+                <a href="register.php">Register</a> - <a href="#">Forgot Password</a>
             </div>
         </div>
     </div>

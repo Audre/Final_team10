@@ -1,7 +1,103 @@
 <?php
 require_once("Database.php");
 session_start();
+
+function test_input($data){
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+
+//$_SESSION["error"] = array();
+//$error = $_SESSION["error"];
+$error = array();
+$first_name = "";
+$last_name = "";
+$email = "";
+
+function print_errors($error){
+    if (count($error) > 0) {
+        echo "<div class='error'>";
+        foreach ($error as $err) {
+            echo $err;
+            echo "<br/>";
+        }
+        echo "</div>";
+        echo "<br/>";
+    }
+}
+
+
+if (isset($_POST["submit"])) {
+    $first_name = $_POST["first_name"];
+    $first_name = test_input($first_name);
+
+    $last_name = $_POST["last_name"];
+    $last_name = test_input($last_name);
+
+    $email = $_POST["email"];
+    $email = test_input($email);
+
+    $password = $_POST["password"];
+    $password2 = $_POST["password2"];
+
+    if (empty($first_name)) {
+        array_push($error, "First name is required");
+    }
+
+    if (empty($last_name)) {
+        array_push($error, "Last name is required");
+    }
+
+    if (empty($email)) {
+        array_push($error, "Email is required.");
+    }
+
+    if (empty($password)) {
+        array_push($error, "Password is required");
+    }
+
+    if ($password != $password2) {
+        array_push($error, "Passwords do not match.");
+    }
+
+    $query = "SELECT * FROM users WHERE email='" . $email. "'";
+    $stmt = $conn->prepare($query);
+    $num = $stmt->execute();
+
+    if ($num) {
+        $result = $stmt->fetch();
+        if ($result["email"] === $email) {
+            array_push($error, "Email is already registered");
+        }
+
+        if ($result["first_name"] === $first_name AND $result["last_name"] === $last_name) {
+            array_push($error, "User is already registered.");
+        }
+    }
+
+    if (count($error) == 0) {
+        $password = md5($password);
+
+        $insert_query = "INSERT INTO users (first_name, last_name, email, password) 
+                  VALUES('$first_name', '$last_name', '$email', '$password')";
+        $stmt2 = $conn->prepare($insert_query);
+        $result2 = $stmt2->execute();
+
+        if ($result2) {
+            $_SESSION["email"] = $email;
+            $_SESSION["first_name"] = $first_name;
+            $_SESSION["last_name"] = $last_name;
+            $_SESSION["success"] = "You are now logged in.";
+            //header('Location: index.php');
+        }
+
+    }
+}
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -72,85 +168,23 @@ session_start();
     <div class="modal-dialog">
         <div class="loginmodal-container">
             <h1>Register</h1><br/>
-            <form action="register.php?action=register" method="POST">
-                <input type="text" name="first_name" placeholder="First Name"/>
-                <input type="text" name="last_name" placeholder="Last Name"/>
-                <input type="text" name="email" placeholder="Email"/>
+            <form action="register.php" method="POST">
+                <?php print_errors($error);?>
+                <input required type="text" name="first_name" placeholder="First Name"/>
+                <input required type="text" name="last_name" placeholder="Last Name"/>
+                <input required type="text" name="email" placeholder="Email"/>
                 <input type="password" name="password" placeholder="Password"/>
-                <input type="password" name="password2" placeholder="Confirm Password"/>
-                <?php
-                echo "\xf0\x9f\x8d\x8d";
-                ?>
+                <input required type="password" name="password2" placeholder="Confirm Password"/>
+<!--                <input required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" type="password" name="password" placeholder="Password"/>-->
+<!--                <input required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" type="password" name="password2" placeholder="Confirm Password"/>-->
                 <button type="submit" name="submit" class="center-block btn btn-primary btn-lg">Register</button>
             </form>
         </div>
     </div>
 
-    <?php
-    function test_input($data){
-        $data = trim($data);
-        $data = stripslashes($data);
-        $data = htmlspecialchars($data);
-        return $data;
-    }
-
-    $error = array();
-    if (isset($_POST["submit"])) {
-        $first_name = "";
-        $last_name = "";
-        $email = "";
-        $password = "";
-        $password2 = "";
-
-        if (!isset($_POST["first_name"])) {
-            echo "Blah";
-            array_push($error, "Please enter first name.");
-        } else {
-            $first_name = $_POST["first_name"];
-            $first_name = test_input($first_name);
-            echo $first_name;
-        }
-
-        if (!isset($_POST["last_name"])) {
-            array_push($error, "Please enter last name.");
-            echo "blah";
-        } else {
-            $last_name = $_POST["last_name"];
-            $last_name = test_input($last_name);
-        }
-
-        if (!isset($_POST["email"])) {
-            array_push($error, "Please enter an email.");
-        } else {
-            $email = $_POST["email"];
-            $email = test_input($email);
-        }
-
-        if (!isset($_POST["password"])) {
-            array_push($error, "Please enter a password.");
-        } else {
-            $password = $_POST["password"];
-            $password = test_input($password);
-        }
-
-        if (!isset($_POST["password2"])) {
-            array_push($error, "Please confirm the password.");
-        } else {
-            $password2 = $_POST["password2"];
-            $password2 = test_input($password2);
-        }
-
-        if ($password && $password2) {
-
-            if ($password2 != $password) {
-                array_push($error, "Passwords do not match.");
-            }
-        }
 
 
-    }
 
-    ?>
 
 </main>
 
