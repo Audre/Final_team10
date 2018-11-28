@@ -62,11 +62,13 @@
                             <li><a href="cameras.php">Cameras & Accessories</a></li>
                             <li><a href="lens.php">Lens</a></li>
                             <li><a href="filters.php">Filters</a></li>
-                            <li><a href="tripods.php">Tripods</a></li>
+                            <li><a href="tripod.php">Tripods</a></li>
                             <li><a href="memorycard.php">Memory Cards</a></li>
                         </ul>
                     </li>
                     <li><a href="cart.php">Cart</a></li>
+                    <li><a href="login.php">Login</a></li>
+                    <li><a href="register.php">Register</a></li>
                 </ul>
         </div>
         </div>

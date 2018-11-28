@@ -45,13 +45,23 @@ session_start();
                             <li><a href="romantic.php">Romantic</a></li>
                         </ul>
                     </li>
-                    <li><a href="about.php">About</a></li>
+                     <li><a href="about.php">About</a></li>
                     <li><a href="contact.php">Contact</a></li>
                     <li><a href="gallery.php">Gallery</a></li>
-                    <li><a href="products.php">Products</a></li>
-                    <li><a href="cameras.php">Cameras</a></li>
+                    <li id="Product">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="cameras.php">Products
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu" id="menu">
+                            <li><a href="cameras.php">Cameras & Accessories</a></li>
+                            <li><a href="lens.php">Lens</a></li>
+                            <li><a href="filters.php">Filters</a></li>
+                            <li><a href="tripod.php">Tripods</a></li>
+                            <li><a href="memorycard.php">Memory Cards</a></li>
+                        </ul>
+                    </li>
                     <li><a href="cart.php">Cart</a></li>
-                    <li class="active"><a href="cart.php">Login</a></li>
+                    <li class="active"><a href="login.php">Login</a></li>
+                    <li><a href="register.php">Register</a></li>
                 </ul>
 
             </div>

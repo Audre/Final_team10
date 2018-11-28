@@ -58,21 +58,23 @@ session_start();
                             <li><a href="romantic.php">Romantic</a></li>
                         </ul>
                     </li>
-                    <li><a href="about.php">About</a></li>
+                     <li><a href="about.php">About</a></li>
                     <li><a href="contact.php">Contact</a></li>
                     <li><a href="gallery.php">Gallery</a></li>
-                    <li  id="Product">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="products.php">Products
+                    <li id="Product">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="cameras.php">Products
                             <span class="caret"></span></a>
                         <ul class="dropdown-menu" id="menu">
                             <li><a href="cameras.php">Cameras & Accessories</a></li>
                             <li><a href="lens.php">Lens</a></li>
                             <li><a href="filters.php">Filters</a></li>
-                            <li><a href="tripods.php">Tripods</a></li>
+                            <li><a href="tripod.php">Tripods</a></li>
                             <li><a href="memorycard.php">Memory Cards</a></li>
                         </ul>
                     </li>
                     <li class="active"><a href="cart.php">Cart</a></li>
+                    <li><a href="login.php">Login</a></li>
+                    <li><a href="register.php">Register</a></li>
                 </ul>
         </div>
         </div>
@@ -123,8 +125,8 @@ session_start();
                     </td>
                     <td><?php echo $item["productID"]; ?></td>
                     <td style="text-align:center;"><?php echo $item["quantity"]; ?></td>
-                    <td style="text-align:center;"><?php echo "$ " . $item["price"]; ?></td>
-                    <td style="text-align:center;"><?php echo "$ " . number_format($item_price, 2); ?></td>
+                    <td style="text-align:center;"><?php echo "\xf0\x9f\x8d\x8d " . $item["price"]; ?></td>
+                    <td style="text-align:center;"><?php echo "\xf0\x9f\x8d\x8d " . number_format($item_price, 2); ?></td>
                     <td style="text-align:center;"><a href="cart.php?action=remove&id=<?php echo $item["productID"]; ?>"
                                                       class="btn bg-info"><i class="fa fa-trash"></i> Remove</a></td>
                 </tr>
@@ -137,7 +139,7 @@ session_start();
             <tr>
                 <td colspan="2" align="right">Total:</td>
                 <td align="right"><?php echo $total_quantity; ?></td>
-                <td align="right" colspan="2"><strong><?php echo "$ " . number_format($total_price, 2); ?></strong></td>
+                <td align="right" colspan="2"><strong><?php echo "\xf0\x9f\x8d\x8d " . number_format($total_price, 2); ?></strong></td>
                 <td></td>
             </tr>
             </tbody>

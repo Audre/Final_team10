@@ -53,22 +53,24 @@ session_start();
                             <li><a href="romantic.php">Romantic</a></li>
                         </ul>
                     </li>
-                    <li><a href="about.php">About</a></li>
+                      <li><a href="about.php">About</a></li>
                     <li><a href="contact.php">Contact</a></li>
                     <li><a href="gallery.php">Gallery</a></li>
-                    <li class="active"  id="Product">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="products.php">Products
+                    <li class="active" id="Product">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="cameras.php">Products
                             <span class="caret"></span></a>
                         <ul class="dropdown-menu" id="menu">
-                            <li class="active"><a href="cameras.php">Cameras & Accessories</a></li>
+                            <li><a href="cameras.php">Cameras & Accessories</a></li>
                             <li><a href="lens.php">Lens</a></li>
                             <li><a href="filters.php">Filters</a></li>
-                            <li><a href="tripods.php">Tripods</a></li>
-                            <li><a href="memorycard.php">Memory Cards</a></li>
+                            <li><a href="tripod.php">Tripods</a></li>
+                            <li class="active"><a href="memorycard.php">Memory Cards</a></li>
                         </ul>
                     </li>
                     <li><a href="cart.php">Cart</a></li>
-                </ul>
+                    <li><a href="login.php">Login</a></li>
+                    <li><a href="register.php">Register</a></li>              
+                    </ul>
         </div>
         </div>
     </nav>
@@ -104,7 +106,7 @@ session_start();
                 echo "<span class='fa fa-star unchecked'></span>";
                 $storageAmount = $row["unitsInStorage"];
                 $price = number_format($row["price"], 2);
-                echo "<span><h3>$" . $price . "</h3>";
+                echo "<span><h3>\xf0\x9f\x8d\x8d" . $price . "</h3>";
                 echo "<p>Total Items: ". $storageAmount . "</p>";
                 $productID = $row["productID"];
                 echo "<form action='cameras.php?action=add&id=" . $productID . "&quant=' method='POST'>";
