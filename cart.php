@@ -72,13 +72,13 @@ session_start();
                             <li><a href="memorycard.php">Memory Cards</a></li>
                         </ul>
                     </li>
-                    <li><a href="cart.php">Cart</a></li>
+                    <li class="active"><a href="cart.php">Cart</a></li>
                     <?php
                     if (isset($_SESSION["logged_in"])) {
                         echo "<li><a href='logout.php'>Logout</a></li>";
                     } else {
                         echo "<li><a href=\"login.php\">Login</a></li>";
-                        echo "<li class=\"active\"><a href=\"register.php\">Register</a></li>";
+                        echo "<li><a href=\"register.php\">Register</a></li>";
                     }
                     ?>
                 </ul>
