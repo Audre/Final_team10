@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 26, 2018 at 10:45 PM
+-- Generation Time: Dec 02, 2018 at 12:53 AM
 -- Server version: 10.1.34-MariaDB
 -- PHP Version: 7.2.7
 
@@ -21,6 +21,21 @@ SET time_zone = "+00:00";
 --
 -- Database: `accounts`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `orders`
+--
+
+CREATE TABLE `orders` (
+  `orderID` int(11) NOT NULL,
+  `userID` int(11) NOT NULL,
+  `productID` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `price` int(11) NOT NULL,
+  `date` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -60,17 +75,31 @@ INSERT INTO `products` (`productID`, `name`, `price`, `weight`, `unitsInStorage`
 
 CREATE TABLE `users` (
   `userID` int(11) NOT NULL,
-  `first_name` varchar(50) NOT NULL,
-  `last_name` varchar(50) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `password` varchar(100) NOT NULL,
-  `giftcard_balance` int(11) NOT NULL DEFAULT '500',
-  `active` tinyint(1) NOT NULL DEFAULT '0'
+  `first_name` varchar(255) NOT NULL,
+  `last_name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `giftcard_balance` int(11) DEFAULT '500'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`userID`, `first_name`, `last_name`, `email`, `password`, `giftcard_balance`) VALUES
+(1, 'Audre', 'Staffen', 'audre', '$2y$10$tR20FAwluDeFWBePNSJ6TeuznRD2l9Lg.pbxbsgk8zjVh8B7K86uS', 500),
+(2, 'admin', 'admin', 'admin', '$2y$10$tv8steohMoNKgv.9hAIuoe3CsGPgkJMWWxfIcCbN6sJ5X.Fz0CUo6', 500),
+(3, 'lkfjw', 'jkflw', 'a', '$2y$10$RG2xrJW48TTVafsPa43gIuTfy1WH5j83aaDL2uaINwuQC3MFQuExu', 500);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`orderID`);
 
 --
 -- Indexes for table `products`
@@ -89,6 +118,12 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `orderID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
@@ -98,7 +133,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
