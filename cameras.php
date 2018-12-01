@@ -68,6 +68,8 @@ session_start();
                         </ul>
                     </li>
                     <li><a href="cart.php">Cart</a></li>
+                 
+
                     <?php
                     if (isset($_SESSION["logged_in"])) {
                         echo "<li><a href='logout.php'>Logout</a></li>";
@@ -106,9 +108,9 @@ session_start();
                 echo "<div class=\"col-lg-5 col-md-4 col-sm-5 col-xs-12 \">";
                 echo "<p style='padding-top:75px'>". $description . "</p><br/>";
                 echo "<span class='fa fa-star checked'></span>";
-                echo "<span class='fa fa-star unchecked'></span>";
-                echo "<span class='fa fa-star unchecked'></span>";
-                echo "<span class='fa fa-star unchecked'></span>";
+                echo "<span class='fa fa-star checked'></span>";
+                echo "<span class='fa fa-star checked'></span>";
+                echo "<span class='fa fa-star checked'></span>";
                 echo "<span class='fa fa-star unchecked'></span>";
                 $storageAmount = $row["unitsInStorage"];
                 $price = number_format($row["price"], 2);
@@ -148,24 +150,41 @@ session_start();
                         $productByCode = $stmt->fetch();
                         $itemArray = array($productByCode["productID"] => array('quantity' => $quantity, 'image' => $productByCode["thumbnail"], 'price' => $productByCode["price"], 'productID' => $id, 'name' => $productByCode['name']));
                         if (!empty($_SESSION["cart"])) {
+                            echo "Before: ";
+                            print_r($itemArray);
                             if (array_key_exists($id, $_SESSION["cart"])) {
+                                echo "here1";
                                 $output = $_SESSION["cart"][$id];
+                                echo "<br/> output:";
+                                print_r($output);
                                 foreach ($_SESSION["cart"] as $key => $value) {
+                                    echo "here2";
+                                    echo "<br/> id: key: <br/>";
+                                    print_r($key);
                                     if ($id == $key) {
+                                        echo "here3";
                                         if (empty($_SESSION["cart"][$key]["quantity"])) {
                                             $_SESSION["cart"][$key]["quantity"] = 0;
+                                            echo "here4";
+                                            print_r($_SESSION["cart"][$key]);
                                         }
                                         $_SESSION["cart"][$key]["quantity"] += $quantity;
+                                        echo "herealso";
+                                        print_r($_SESSION["cart"][$key]);
                                     }
                                 }
                             } else {
                                 $_SESSION["cart"] = $_SESSION["cart"] + $itemArray;
+                                echo "/////////////////////////////////////////////////////";
                             }
                         } else {
                             $_SESSION["cart"] = $itemArray;
+                            echo "*******************************************";
                         }
                     }
                 }
+                echo "Cart: <br/>";
+                print_r($_SESSION["cart"]);
                 break;
         }
     }

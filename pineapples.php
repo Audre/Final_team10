@@ -65,7 +65,7 @@
                             <li><a href="memorycard.php">Memory Cards</a></li>
                         </ul>
                     </li>
-                    <li><a href="cart.php">Cart</a></li>
+                     <li><a href="cart.php">Cart</a></li>
                     <?php
                     if (isset($_SESSION["logged_in"])) {
                         echo "<li><a href='logout.php'>Logout</a></li>";

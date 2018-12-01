@@ -1,21 +1,18 @@
 <?php
 require_once("Database.php");
 session_start();
-
 function test_input($data){
     $data = trim($data);
     $data = stripslashes($data);
     $data = htmlspecialchars($data);
     return $data;
 }
-
 //$_SESSION["error"] = array();
 //$error = $_SESSION["error"];
 $error = array();
 $first_name = "";
 $last_name = "";
 $email = "";
-
 function print_errors($error){
     if (count($error) > 0) {
         echo "<div class='error'>";
@@ -27,65 +24,48 @@ function print_errors($error){
         echo "<br/>";
     }
 }
-
-
 if (isset($_POST["submit"])) {
     $first_name = $_POST["first_name"];
     $first_name = test_input($first_name);
-
     $last_name = $_POST["last_name"];
     $last_name = test_input($last_name);
-
     $email = $_POST["email"];
     $email = test_input($email);
-
     $password = $_POST["password"];
     $password2 = $_POST["password2"];
-
     if (empty($first_name)) {
         array_push($error, "First name is required");
     }
-
     if (empty($last_name)) {
         array_push($error, "Last name is required");
     }
-
     if (empty($email)) {
         array_push($error, "Email is required.");
     }
-
     if (empty($password)) {
         array_push($error, "Password is required");
     }
-
     if ($password != $password2) {
         array_push($error, "Passwords do not match.");
     }
-
     $query = "SELECT * FROM users WHERE email='" . $email. "'";
     $stmt = $conn->prepare($query);
     $num = $stmt->execute();
-
     if ($num) {
         $result = $stmt->fetch();
         if ($result["email"] === $email) {
             array_push($error, "Email is already registered");
         }
-
         if ($result["first_name"] === $first_name AND $result["last_name"] === $last_name) {
             array_push($error, "User is already registered.");
         }
     }
-
     if (count($error) == 0) {
-
         $password = password_hash($password, PASSWORD_DEFAULT);
-
         $insert_query = "INSERT INTO users (first_name, last_name, email, password) 
                   VALUES('$first_name', '$last_name', '$email', '$password')";
         $stmt2 = $conn->prepare($insert_query);
         $result2 = $stmt2->execute();
-
         if ($result2) {
             $_SESSION["email"] = $email;
             $_SESSION["first_name"] = $first_name;
@@ -94,10 +74,8 @@ if (isset($_POST["submit"])) {
             $_SESSION["logged_in"] = true;
             header('Location: account.php');
         }
-
     }
 }
-
 ?>
 
 <!DOCTYPE html>

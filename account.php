@@ -61,6 +61,7 @@ session_start();
                         </ul>
                     </li>
                     <li><a href="cart.php">Cart</a></li>
+             
                     <?php
                     if (isset($_SESSION["logged_in"])) {
                         echo "<li><a href='logout.php'>Logout</a></li>";
@@ -80,22 +81,10 @@ session_start();
 <main>
     <?php
     if (isset($_SESSION["success"])) {
-        $first_name = $_SESSION["first_name"];
-        $last_name = $_SESSION["last_name"];
-        echo "<div class=\"profile-container\">";
-        echo "<h3 class='text-center'>Hello, " . $first_name . "!</h3>";
-        echo "<div class=\"col-lg-3 profile-outlin\">";
-        echo "<p class=\"profile-box\">Your Orders: </p>";
-        echo "</div>";
-        echo "</div>";
 
     }
 
     ?>
-
-
-
-
 
 </main>
 

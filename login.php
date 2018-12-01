@@ -1,23 +1,19 @@
 <?php
 require_once("Database.php");
 session_start();
-
 function test_input($data){
     $data = trim($data);
     $data = stripslashes($data);
     $data = htmlspecialchars($data);
     return $data;
 }
-
 //$_SESSION["error"] = array();
 //$error = $_SESSION["error"];
 $error = array();
 $first_name = "";
 $last_name = "";
 $email = "";
-
 function print_errors($error){
-
     if (count($error) > 0) {
         echo "<div class='error'>";
         foreach ($error as $err) {
@@ -28,26 +24,19 @@ function print_errors($error){
         echo "<br/>";
     }
 }
-
-
 if (isset($_POST["login"])) {
     $email = $_POST["email"];
     $email = test_input($email);
     $password = $_POST["password"];
-
     if (empty($email)) {
         array_push($error, "Email is required.");
     }
-
     if (empty($password)) {
         array_push($error, "Password is required");
     }
-
-
     $query = "SELECT * FROM users WHERE email='" . $email. "'";
     $stmt = $conn->prepare($query);
     $num = $stmt->execute();
-
     if ($num) {
         $result = $stmt->fetch();
         if ($result) {
@@ -63,13 +52,10 @@ if (isset($_POST["login"])) {
             } else {
                 array_push($error, "Passwords do not match.");
             }
-
         } else {
             array_push($error, "Email is not registered.");
         }
-
     }
-
 }
 ?>
 <!DOCTYPE html>
