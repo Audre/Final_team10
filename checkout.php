@@ -100,6 +100,7 @@ session_start();
       
         <div class="row">
           <div class="col-50">
+
             <h3>Billing Address</h3>
             <label for="fname"><i class="fa fa-user"></i> Full Name</label>
             <input type="text" id="fname" name="firstname" placeholder="Steve Smith">
@@ -123,7 +124,15 @@ session_start();
           </div>
 
           <div class="col-50">
+
             <h3>Payment</h3>
+             <label for="balance">Check Gift Card Balance: </label>
+        <form action="balance.php" method="post">
+        <label for="bname"> Name: </label><input type="text" name="fname" />
+        <label for="bcard"> Card #:</label> <input type="text" name="cardId" />
+        <input type="submit" value="submit" name="submit"><br>
+       </form>
+       
             <label for="fname">   Accepted Gift Cards</label>
             <div class="icon-container">
               <i class="fa fa-gift" style="color:navy;"></i>
@@ -153,6 +162,8 @@ session_start();
         <label>
           <input type="checkbox" checked="checked" name="sameadr"> Shipping address same as billing
         </label>
+
+
         <input type="submit" value="Continue to checkout" class="btn">
       </form>
     </div>
