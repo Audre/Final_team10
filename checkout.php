@@ -126,16 +126,13 @@ session_start();
           <div class="col-50">
 
             <h3>Payment</h3>
-             <label for="balance">Check Gift Card Balance: </label>
-        <form action="balance.php" method="post">
-        <label for="bname"> Name: </label><input type="text" name="fname" />
-        <label for="bcard"> Card #:</label> <input type="text" name="cardId" />
-        <input type="submit" value="submit" name="submit"><br>
-       </form>
-       
-            <label for="fname">   Accepted Gift Cards</label>
+             
+       <label>
+          <input type="checkbox" checked="checked" name="sameadr"> Apply Gift Card Balance <i class="fa fa-gift" style="color:navy;"></i>
+        </label>
+            <label for="fname">   Accepted Cards</label>
             <div class="icon-container">
-              <i class="fa fa-gift" style="color:navy;"></i>
+              
               <i class="fa fa-cc-visa" style="color:blue;"></i>
               <i class="fa fa-cc-mastercard" style="color:red;"></i>
               <i class="fa fa-cc-discover" style="color:orange;"></i>
