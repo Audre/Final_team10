@@ -16,6 +16,20 @@ $first_name = "";
 $last_name = "";
 $email = "";
 
+function print_errors($error){
+
+    if (count($error) > 0) {
+        echo "<div class='error'>";
+        foreach ($error as $err) {
+            echo $err;
+            echo "<br/>";
+        }
+        echo "</div>";
+        echo "<br/>";
+    }
+}
+
+
 if (isset($_POST["login"])) {
     $email = $_POST["email"];
     $email = test_input($email);
@@ -29,24 +43,30 @@ if (isset($_POST["login"])) {
         array_push($error, "Password is required");
     }
 
+
     $query = "SELECT * FROM users WHERE email='" . $email. "'";
     $stmt = $conn->prepare($query);
     $num = $stmt->execute();
 
     if ($num) {
-        echo "blah";
         $result = $stmt->fetch();
-        $password_check = password_verify($password, $result["password"]);
-        if ($password_check) {
-            $_SESSION["email"] = $email;
-            $_SESSION["first_name"] = $result["first_name"];
-            $_SESSION["last_name"] = $result["last_name"];
-            $_SESSION["success"] = "You are now logged in.";
-            $_SESSION["logged_in"] = true;
-            header('Location: account.php');
+        if ($result) {
+            $password_check = password_verify($password, $result["password"]);
+            if ($password_check) {
+                $_SESSION["email"] = $email;
+                $_SESSION["first_name"] = $result["first_name"];
+                $_SESSION["last_name"] = $result["last_name"];
+                $_SESSION["success"] = "You are now logged in.";
+                $_SESSION["logged_in"] = true;
+                header('Location: account.php');
+            } else {
+                array_push($error, "Passwords do not match.");
+            }
+
         } else {
-            echo "Passwords do not match";
+            array_push($error, "Email is not registered.");
         }
+
     }
 
 }
@@ -122,6 +142,7 @@ if (isset($_POST["login"])) {
         <div class="loginmodal-container">
             <h1>Login to Your Account</h1><br/>
             <form action="login.php" method="POST">
+                <?php print_errors($error);?>
                 <input required type="text" name="email" placeholder="Email">
                 <input type="password" name="password" placeholder="Password">
                 <input type="submit" name="login" class="login loginmodal-submit" value="Login">

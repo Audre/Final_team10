@@ -153,7 +153,7 @@ session_start();
         <br/>
         <div >
             <form action='cart.php?action=checkout' method='POST'>
-                <button class='btn btn-primary' name='submit' type='submit'><i class='fa fa-credit-card'></i> Checkout</button>
+                <a href="checkout.php" class='btn btn-primary' name='submit' type='submit'><i class='fa fa-credit-card'></i> Checkout</a>
             </form>
         </div>
         <?php

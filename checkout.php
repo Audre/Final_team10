@@ -79,24 +79,27 @@ session_start();
 </header>
 <main>
     <?php
+    if (!isset($_SESSION["cart"])) {
+        header('Location: cart.php');
+    }
+
     if (isset($_SESSION["success"])) {
         $first_name = $_SESSION["first_name"];
         $last_name = $_SESSION["last_name"];
-        echo "<div class=\"profile-container\">";
-        echo "<h3 class='text-center'>Hello, " . $first_name . "!</h3>";
-        echo "<div class=\"col-lg-3 profile-outlin\">";
-        echo "<p class=\"profile-box\">Your Orders: </p>";
-        echo "</div>";
-        echo "</div>";
+
+
+    } else {
+//        header('Location: login.php');
 
     }
 
     ?>
 
 
+    <div class="container-fluid">
+        <h3 class="text-center">Order Summary:</h3>
 
-
-
+    </div>
 </main>
 
 </body>

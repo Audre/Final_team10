@@ -8987,3 +8987,46 @@ td a {
     border: 1px solid #3c763d;
     margin-bottom: 20px;
 }
+
+/* ********************************************************** */
+
+.profile-container {
+    padding: 3%;
+    margin-left: 5%;
+    margin-right: 5%;
+    /*margin-top: 3%;*/
+    /*margin-bottom: 3%;*/
+    border-radius: 0.5rem;
+    background: #fff;
+    color: #2b3e50;
+}
+
+.profile-outline {
+    padding: 5%;
+    line-height: 1.42857143;
+    margin-bottom: 21px;
+    background-color: transparent;
+    border: 1px solid #357ae8;
+    border-radius: 0;
+    -webkit-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+    display: inline-block;
+    max-width: 100%;
+    height: auto;
+}
+
+.profile-box {
+    box-sizing: border-box;
+    font-size: 13px;
+    line-height: 19px;
+    color: #111;
+    /*min-width: 998px;*/
+    padding: 14px 18px 18px;
+    margin: 0 auto;
+    display: block;
+    border-radius: 4px;
+    border: 1px #ddd solid;
+    background-color: #fff;
+}
+
