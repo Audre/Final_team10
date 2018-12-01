@@ -124,10 +124,10 @@ session_start();
 
           <div class="col-50">
             <h3>Payment</h3>
-            <label for="fname">   Accepted Cards</label>
+            <label for="fname">   Accepted Gift Cards</label>
             <div class="icon-container">
-              <i class="fa fa-cc-visa" style="color:navy;"></i>
-              <i class="fa fa-cc-amex" style="color:blue;"></i>
+              <i class="fa fa-gift" style="color:navy;"></i>
+              <i class="fa fa-cc-visa" style="color:blue;"></i>
               <i class="fa fa-cc-mastercard" style="color:red;"></i>
               <i class="fa fa-cc-discover" style="color:orange;"></i>
             </div>
