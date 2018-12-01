@@ -148,41 +148,24 @@ session_start();
                         $productByCode = $stmt->fetch();
                         $itemArray = array($productByCode["productID"] => array('quantity' => $quantity, 'image' => $productByCode["thumbnail"], 'price' => $productByCode["price"], 'productID' => $id, 'name' => $productByCode['name']));
                         if (!empty($_SESSION["cart"])) {
-                            echo "Before: ";
-                            print_r($itemArray);
                             if (array_key_exists($id, $_SESSION["cart"])) {
-                                echo "here1";
                                 $output = $_SESSION["cart"][$id];
-                                echo "<br/> output:";
-                                print_r($output);
                                 foreach ($_SESSION["cart"] as $key => $value) {
-                                    echo "here2";
-                                    echo "<br/> id: key: <br/>";
-                                    print_r($key);
                                     if ($id == $key) {
-                                        echo "here3";
                                         if (empty($_SESSION["cart"][$key]["quantity"])) {
                                             $_SESSION["cart"][$key]["quantity"] = 0;
-                                            echo "here4";
-                                            print_r($_SESSION["cart"][$key]);
                                         }
                                         $_SESSION["cart"][$key]["quantity"] += $quantity;
-                                        echo "herealso";
-                                        print_r($_SESSION["cart"][$key]);
                                     }
                                 }
                             } else {
                                 $_SESSION["cart"] = $_SESSION["cart"] + $itemArray;
-                                echo "/////////////////////////////////////////////////////";
                             }
                         } else {
                             $_SESSION["cart"] = $itemArray;
-                            echo "*******************************************";
                         }
                     }
                 }
-                echo "Cart: <br/>";
-                print_r($_SESSION["cart"]);
                 break;
         }
     }
