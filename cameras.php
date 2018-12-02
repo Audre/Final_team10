@@ -92,13 +92,12 @@ session_start();
     if ($num) {
     ?>
     <div class="container-fluid" style="padding-left: 5%">
-        <div class="row">
-
             <?php
             $row = $stmt->fetch();
             $category = ucfirst($row["category"]);
             echo "<h1 class='text-center content-heading'>" . $category . "s</h1>";
             for ($i = 0; $i < $num; $i++) {
+                echo "<div class=\"row\">";
                 $name = $row["name"];
                 echo "<div class='col-lg-10 col-lg-offset-1 col-md-10 col-sm-10 col-xs-12 product-thumbnail '>";
                 echo "<h3 class='text-center'>" . $name . "</h3> <br/>";
@@ -151,12 +150,14 @@ session_start();
                         $quantity_in_database = $productByCode["unitsInStorage"];
                         echo $quantity_in_database;
                         if ($quantity > $quantity_in_database) {
+
                             echo "Not enough inventory.";
                         } else {
                             $quantity_in_database -= $quantity;
                             $update_quantity_query = "UPDATE products SET unitsInStorage=" . $quantity_in_database . " WHERE productID=" . $id;
                             if ($conn->query($update_quantity_query) === TRUE) {
                                 echo "record updated";
+                                header("refresh: 3;");
                             }
                             echo $quantity_in_database;
                         }
