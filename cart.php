@@ -32,23 +32,24 @@ session_start();
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand">A & K Photo</a>
+                <a class="navbar-brand">A & K Photography</a>
             </div>
+
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li><a href="index.php">Home <span class="sr-only">(current)</span></a></li>
-                    <li id="Catalog">
+                    <li  id="Catalog">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="catalog.php">Catalog
                             <span class="caret"></span></a>
                         <ul class="dropdown-menu" id="menu1">
                             <li><a href="catalog.php">Catalog</a></li>
-                            <li><a href="gallery.php">Gallery</a></li>
                             <li><a href="food.php">Food</a></li>
                             <li><a href="pets.php">Pets</a></li>
                             <li><a href="nature.php">Nature</a></li>
@@ -57,9 +58,9 @@ session_start();
                             <li><a href="romantic.php">Romantic</a></li>
                         </ul>
                     </li>
-                    <li><a href="about.php">About</a></li>
+                     <li><a href="about.php">About</a></li>
                     <li><a href="contact.php">Contact</a></li>
-
+                    <li><a href="gallery.php">Gallery</a></li>
                     <li id="Product">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="cameras.php">Products
                             <span class="caret"></span></a>
@@ -72,11 +73,8 @@ session_start();
                         </ul>
                     </li>
                     <li class="active"><a href="cart.php">Cart</a></li>
-
-
                     <?php
                     if (isset($_SESSION["logged_in"])) {
-                        echo "<li><a href='account.php'>Account</a></li>";
                         echo "<li><a href='logout.php'>Logout</a></li>";
                     } else {
                         echo "<li><a href=\"login.php\">Login</a></li>";
@@ -84,7 +82,7 @@ session_start();
                     }
                     ?>
                 </ul>
-            </div>
+        </div>
         </div>
     </nav>
 </header>
@@ -93,18 +91,6 @@ session_start();
     if (!empty($_GET["action"])) {
         switch ($_GET["action"]) {
             case "empty":
-                foreach ($_SESSION["cart"] as $item) {
-                    print_r($item);
-                    echo "<br/>";
-
-                    $query = "SELECT * FROM products WHERE productID=" . $item["productID"];
-                    $stmt = $conn->prepare($query);
-                    $stmt->execute();
-                    $result = $stmt->fetch();
-                    print_r($result);
-
-                }
-
                 unset($_SESSION["cart"]);
                 break;
             case "remove":
@@ -148,7 +134,7 @@ session_start();
                     <td style="text-align:center;"><?php echo "\xf0\x9f\x8d\x8d " . $item["price"]; ?></td>
                     <td style="text-align:center;"><?php echo "\xf0\x9f\x8d\x8d " . number_format($item_price, 2); ?></td>
                     <td style="text-align:center;"><a href="cart.php?action=remove&id=<?php echo $item["productID"]; ?>"
-                                                      class="btn btn-checkout"><i class="fa fa-trash"></i> Remove</a></td>
+                                                      class="btn bg-info"><i class="fa fa-trash"></i> Remove</a></td>
                 </tr>
                 <?php
                 $total_quantity += $item["quantity"];
@@ -167,7 +153,7 @@ session_start();
         <br/>
         <div >
             <form action='cart.php?action=checkout' method='POST'>
-                <a href="checkout.php" class='btn-checkout btn-primary' name='submit' type='submit'><i class='fa fa-credit-card'></i> Checkout</a>
+                <a href="confirm.php" class='btn btn-primary' name='submit' type='submit'><i class='fa fa-credit-card'></i> Checkout</a>
             </form>
         </div>
         <?php

@@ -1,6 +1,8 @@
 <?php
 require_once("Database.php");
 session_start();
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,7 +16,7 @@ session_start();
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
+     <style>
         #Product:hover #menu{
             display: block;
             position: absolute;
@@ -58,7 +60,7 @@ session_start();
                             <li><a href="romantic.php">Romantic</a></li>
                         </ul>
                     </li>
-                    <li><a href="about.php">About</a></li>
+                     <li><a href="about.php">About</a></li>
                     <li><a href="contact.php">Contact</a></li>
                     <li><a href="gallery.php">Gallery</a></li>
                     <li id="Product">
@@ -73,6 +75,8 @@ session_start();
                         </ul>
                     </li>
                     <li><a href="cart.php">Cart</a></li>
+                   
+                  
 
                     <?php
                     if (isset($_SESSION["logged_in"])) {
@@ -83,23 +87,13 @@ session_start();
                     }
                     ?>
                 </ul>
-            </div>
+        </div>
         </div>
     </nav>
 </header>
 <main>
-
-    <?php
-    if (isset($_SESSION["logged_in"])) {
-        unset($_SESSION);
-        header("Location: index.php");
-    } else {
-        echo "You cannot log out.";
-        header("Location: index.php");
-    }
-    ?>
-
-
+   <?php echo "<div class=\"txt-heading\">Thank you! Your order has been placed! </div>";
+   ?>
 </main>
 </body>
 </html>

@@ -2,9 +2,7 @@
 require_once("Database.php");
 session_start();
 
-if (!isset($_SESSION["logged_in"])) {
-    header("Location: login.php");
-}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -146,6 +144,7 @@ if (!isset($_SESSION["logged_in"])) {
                 <?php
                 $total_quantity += $item["quantity"];
                 $total_price += ($item["price"] * $item["quantity"]);
+                $new_total = ($_SESSION["giftcard_balance"]- $total_price);
             }
             ?>
 
@@ -159,19 +158,31 @@ if (!isset($_SESSION["logged_in"])) {
         </table>
         <br/>
         <div >
-             <label>
-          <input type="checkbox" checked="checked" name="sameadr"> Apply Gift Card <i class="fa fa-gift" style="color:navy;"></i> 
-          <?php
-          echo $_SESSION["giftcard_balance"];
+        <label
 
-          ?>  
+          
+           <?php echo $_SESSION["giftcard_balance"]; ?>
 
-              
-                
+
+          <input type="checkbox" checked="checked" name="sameadr"> Gift Card Applied <i class="fa fa-gift" style="color:navy;"></i> <br> 
+           Gift Card Balance: 
+           <?php echo $_SESSION["giftcard_balance"];
+           ?>
+           <br>
+           Total Cart Balance: - 
+           <?php 
+           echo $total_price;
+           ?>
+           <br>
+           New Gift Card Balance: 
+           <?php
+           echo $new_total;
+           ?>
+
         </label>
             <form action='cart.php?action=checkout' method='POST'>
 
-          <a href="checkout.php" class='btn btn-primary' name='submit' type='submit'><i class='fa fa-credit-card'></i>Place Order</a>
+          <a href="thankyou.php" class='btn btn-primary' name='submit' type='submit'><i class='fa fa-credit-card'></i>Place Order</a>
             </form>
         </div>
         <?php

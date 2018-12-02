@@ -2,9 +2,30 @@
 require_once("Database.php");
 session_start();
 
-if (!isset($_SESSION["logged_in"])) {
-    header("Location: login.php");
+function test_input($data){
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
 }
+$error = array();
+$first_name = "";
+$last_name = "";
+$email = "";
+
+function print_errors($error){
+
+    if (count($error) > 0) {
+        echo "<div class='error'>";
+        foreach ($error as $err) {
+            echo $err;
+            echo "<br/>";
+        }
+        echo "</div>";
+        echo "<br/>";
+    }
+}
+
 
 ?>
 <!DOCTYPE html>
@@ -37,23 +58,24 @@ if (!isset($_SESSION["logged_in"])) {
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand">A & K Photo</a>
+                <a class="navbar-brand">A & K Photography</a>
             </div>
+
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li><a href="index.php">Home <span class="sr-only">(current)</span></a></li>
-                    <li id="Catalog">
+                    <li  id="Catalog">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="catalog.php">Catalog
                             <span class="caret"></span></a>
                         <ul class="dropdown-menu" id="menu1">
                             <li><a href="catalog.php">Catalog</a></li>
-                            <li><a href="gallery.php">Gallery</a></li>
                             <li><a href="food.php">Food</a></li>
                             <li><a href="pets.php">Pets</a></li>
                             <li><a href="nature.php">Nature</a></li>
@@ -62,9 +84,9 @@ if (!isset($_SESSION["logged_in"])) {
                             <li><a href="romantic.php">Romantic</a></li>
                         </ul>
                     </li>
-                    <li><a href="about.php">About</a></li>
+                     <li><a href="about.php">About</a></li>
                     <li><a href="contact.php">Contact</a></li>
-
+                    <li><a href="gallery.php">Gallery</a></li>
                     <li id="Product">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="cameras.php">Products
                             <span class="caret"></span></a>
@@ -77,11 +99,11 @@ if (!isset($_SESSION["logged_in"])) {
                         </ul>
                     </li>
                     <li><a href="cart.php">Cart</a></li>
-
+                   
+                  
 
                     <?php
                     if (isset($_SESSION["logged_in"])) {
-                        echo "<li><a href='account.php'>Account</a></li>";
                         echo "<li><a href='logout.php'>Logout</a></li>";
                     } else {
                         echo "<li><a href=\"login.php\">Login</a></li>";
@@ -89,37 +111,37 @@ if (!isset($_SESSION["logged_in"])) {
                     }
                     ?>
                 </ul>
-            </div>
+        </div>
         </div>
     </nav>
 </header>
 <main>
 
-<div class="container-checkout">
+<div class="row">
   <div class="col-75">
-    <div class="container-checkout">
+    <div class="container">
       <form action="/action_page.php">
       
-        <div class="row-checkout">
+        <div class="row">
           <div class="col-50">
 
-            <h3>Billing Address</h3>
-            <label for="fname"><i class="fa fa-user"></i> Full Name</label>
+            <h3>Contact Information</h3>
+            <label for="fname"><i class="fa fa-user" required></i> Full Name </label>
             <input type="text" id="fname" name="firstname" placeholder="Steve Smith">
-            <label for="email"><i class="fa fa-envelope"></i> Email</label>
+            <label for="email"><i class="fa fa-envelope" required ></i> Email</label>
             <input type="text" id="email" name="email" placeholder="Steve@example.com">
-            <label for="adr"><i class="fa fa-address-card-o"></i> Address</label>
-            <input type="text" id="adr" name="address" placeholder="123 W. Pineapple Street">
-            <label for="city"><i class="fa fa-institution"></i> City</label>
+            <label  for="adr"><i class="fa fa-address-card-o" required ></i> Address</label>
+            <input  type="text" id="adr" name="address" placeholder="123 W. Pineapple Street">
+            <label  for="city"><i class="fa fa-institution" required ></i> City</label>
             <input type="text" id="city" name="city" placeholder="New York">
 
-            <div class="row-checkout">
+            <div class="row">
               <div class="col-50">
-                <label for="state">State</label>
+                <label for="state" required >State</label>
                 <input type="text" id="state" name="state" placeholder="NY">
               </div>
               <div class="col-50">
-                <label for="zip">Zip</label>
+                <label for="zip" required >Zip</label>
                 <input type="text" id="zip" name="zip" placeholder="10001">
               </div>
             </div>
@@ -165,12 +187,12 @@ if (!isset($_SESSION["logged_in"])) {
         </label>
          <div >
             <form action='checkout.php?action=continuecheckout' method='POST'>
-                <a href="confirm.php" class='btn-checkout btn-primary' name='submit' type='submit'><i class='fa fa-credit-card'></i>Continue to Checkout</a>
+                <a href="confirm.php" class='btn btn-primary' name='submit' type='submit'><i class='fa fa-credit-card' required></i>Continue to Checkout</a>
             </form>
         </div>
     </div>
   </div>
-
+  
 
 
 </main>

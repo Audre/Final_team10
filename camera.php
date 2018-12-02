@@ -53,7 +53,7 @@ session_start();
                             <li><a href="romantic.php">Romantic</a></li>
                         </ul>
                     </li>
-                     <li><a href="about.php">About</a></li>
+                  <li><a href="about.php">About</a></li>
                     <li><a href="contact.php">Contact</a></li>
                     <li><a href="gallery.php">Gallery</a></li>
                     <li id="Product">
@@ -68,8 +68,6 @@ session_start();
                         </ul>
                     </li>
                     <li><a href="cart.php">Cart</a></li>
-                 
-
                     <?php
                     if (isset($_SESSION["logged_in"])) {
                         echo "<li><a href='logout.php'>Logout</a></li>";
@@ -85,7 +83,7 @@ session_start();
 </header>
 <main>
     <?php
-    $query = "SELECT * FROM products ";
+   $query = "SELECT * FROM products WHERE category='camera' ";
     $stmt = $conn->prepare($query);
     $stmt->execute();
     $num = $stmt->rowCount();
@@ -108,9 +106,9 @@ session_start();
                 echo "<div class=\"col-lg-5 col-md-4 col-sm-5 col-xs-12 \">";
                 echo "<p style='padding-top:75px'>". $description . "</p><br/>";
                 echo "<span class='fa fa-star checked'></span>";
-                echo "<span class='fa fa-star checked'></span>";
-                echo "<span class='fa fa-star checked'></span>";
-                echo "<span class='fa fa-star checked'></span>";
+                echo "<span class='fa fa-star unchecked'></span>";
+                echo "<span class='fa fa-star unchecked'></span>";
+                echo "<span class='fa fa-star unchecked'></span>";
                 echo "<span class='fa fa-star unchecked'></span>";
                 $storageAmount = $row["unitsInStorage"];
                 $price = number_format($row["price"], 2);
@@ -148,61 +146,38 @@ session_start();
                         $quantity = $_POST["quant"];
                         $id = $_GET["id"];
                         $productByCode = $stmt->fetch();
-                        $quantity_in_database = $productByCode["unitsInStorage"];
-                        echo $quantity_in_database;
-                        if ($quantity > $quantity_in_database) {
-                            ?>
-
-<script>
-$(function() {
-$("#myModal").modal(close);
-});
-
-</script>
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Important!</h4>
-        </div>
-        <div class="modal-body">
-          <p>Not Enough Inventory</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-<?php
-      } else {
-                            $quantity_in_database -= $quantity;
-                            $update_quantity_query = "UPDATE products SET unitsInStorage=" . $quantity_in_database . " WHERE productID=" . $id;
-                            if ($conn->query($update_quantity_query) === TRUE) {
-                                echo "record updated";
-                            }
-                            echo $quantity_in_database;
-                        }
                         $itemArray = array($productByCode["productID"] => array('quantity' => $quantity, 'image' => $productByCode["thumbnail"], 'price' => $productByCode["price"], 'productID' => $id, 'name' => $productByCode['name']));
                         if (!empty($_SESSION["cart"])) {
+                            echo "Before: ";
+                            print_r($itemArray);
                             if (array_key_exists($id, $_SESSION["cart"])) {
+                                echo "here1";
                                 $output = $_SESSION["cart"][$id];
+                                echo "<br/> output:";
+                                print_r($output);
                                 foreach ($_SESSION["cart"] as $key => $value) {
+                                    echo "here2";
+                                    echo "<br/> id: key: <br/>";
+                                    print_r($key);
                                     if ($id == $key) {
+                                        echo "here3";
                                         if (empty($_SESSION["cart"][$key]["quantity"])) {
                                             $_SESSION["cart"][$key]["quantity"] = 0;
+                                            echo "here4";
+                                            print_r($_SESSION["cart"][$key]);
                                         }
                                         $_SESSION["cart"][$key]["quantity"] += $quantity;
+                                        echo "herealso";
+                                        print_r($_SESSION["cart"][$key]);
                                     }
                                 }
                             } else {
                                 $_SESSION["cart"] = $_SESSION["cart"] + $itemArray;
+                                echo "/////////////////////////////////////////////////////";
                             }
                         } else {
                             $_SESSION["cart"] = $itemArray;
+                            echo "*******************************************";
                         }
                     }
                 }
