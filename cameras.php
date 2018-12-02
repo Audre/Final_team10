@@ -36,9 +36,9 @@ $ok_to_purchase = False;
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand">A & K Photography</a>
+                <a class="navbar-brand">A & K Photo</a>
             </div>
-<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li><a href="index.php">Home <span class="sr-only">(current)</span></a></li>
                     <li id="Catalog">
@@ -46,6 +46,7 @@ $ok_to_purchase = False;
                             <span class="caret"></span></a>
                         <ul class="dropdown-menu" id="menu1">
                             <li><a href="catalog.php">Catalog</a></li>
+                            <li><a href="gallery.php">Gallery</a></li>
                             <li><a href="food.php">Food</a></li>
                             <li><a href="pets.php">Pets</a></li>
                             <li><a href="nature.php">Nature</a></li>
@@ -54,14 +55,14 @@ $ok_to_purchase = False;
                             <li><a href="romantic.php">Romantic</a></li>
                         </ul>
                     </li>
-                     <li><a href="about.php">About</a></li>
+                    <li><a href="about.php">About</a></li>
                     <li><a href="contact.php">Contact</a></li>
-                    <li><a href="gallery.php">Gallery</a></li>
+
                     <li id="Product">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="cameras.php">Products
                             <span class="caret"></span></a>
                         <ul class="dropdown-menu" id="menu">
-                            <li><a href="cameras.php">Cameras & Accessories</a></li>
+                            <li class="active"><a href="cameras.php">Cameras & Accessories</a></li>
                             <li><a href="lens.php">Lens</a></li>
                             <li><a href="filters.php">Filters</a></li>
                             <li><a href="tripod.php">Tripods</a></li>
@@ -69,10 +70,11 @@ $ok_to_purchase = False;
                         </ul>
                     </li>
                     <li><a href="cart.php">Cart</a></li>
-                 
+
 
                     <?php
                     if (isset($_SESSION["logged_in"])) {
+                        echo "<li><a href='account.php'>Account</a></li>";
                         echo "<li><a href='logout.php'>Logout</a></li>";
                     } else {
                         echo "<li><a href=\"login.php\">Login</a></li>";
@@ -80,7 +82,7 @@ $ok_to_purchase = False;
                     }
                     ?>
                 </ul>
-        </div>
+            </div>
         </div>
     </nav>
 </header>
@@ -127,7 +129,7 @@ $ok_to_purchase = False;
                 }
                 echo "</select></span>";
                 if ($storageAmount == 0) {
-                    echo "<button class='btn bg-danger' name='button' data-toggle='modal' data-target='#myModal' id='myBtn'><i class='fa fa-shopping-cart'></i> No Inventory</button></span>";
+                    echo "<a class='btn bg-danger' name='no_inventory' id='myBtn'><i class='fa fa-shopping-cart'></i> No Inventory</a></span>";
                 } else {
                     echo "<button class='btn bg-success btn-text-color' name='submit' type='submit'><i class='fa fa-shopping-cart'></i> Add to Cart</button></span>";
                 }
@@ -201,10 +203,10 @@ $ok_to_purchase = False;
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Modal Header</h4>
+                    <h4 class="modal-title text-center">No inventory</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Some text in the modal.</p>
+                    <p>The item has not been added to your cart.</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>

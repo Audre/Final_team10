@@ -35,9 +35,9 @@ session_start();
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand">A & K Photography</a>
+                <a class="navbar-brand">A & K Photo</a>
             </div>
-<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li><a href="index.php">Home <span class="sr-only">(current)</span></a></li>
                     <li id="Catalog">
@@ -45,6 +45,7 @@ session_start();
                             <span class="caret"></span></a>
                         <ul class="dropdown-menu" id="menu1">
                             <li><a href="catalog.php">Catalog</a></li>
+                            <li><a href="gallery.php">Gallery</a></li>
                             <li><a href="food.php">Food</a></li>
                             <li><a href="pets.php">Pets</a></li>
                             <li><a href="nature.php">Nature</a></li>
@@ -53,9 +54,9 @@ session_start();
                             <li><a href="romantic.php">Romantic</a></li>
                         </ul>
                     </li>
-                      <li><a href="about.php">About</a></li>
+                    <li><a href="about.php">About</a></li>
                     <li><a href="contact.php">Contact</a></li>
-                    <li><a href="gallery.php">Gallery</a></li>
+
                     <li class="active" id="Product">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="cameras.php">Products
                             <span class="caret"></span></a>
@@ -67,10 +68,12 @@ session_start();
                             <li><a href="memorycard.php">Memory Cards</a></li>
                         </ul>
                     </li>
-                     <li><a href="cart.php">Cart</a></li>
-                  <!--  -->
+                    <li><a href="cart.php">Cart</a></li>
+
+
                     <?php
                     if (isset($_SESSION["logged_in"])) {
+                        echo "<li><a href='account.php'>Account</a></li>";
                         echo "<li><a href='logout.php'>Logout</a></li>";
                     } else {
                         echo "<li><a href=\"login.php\">Login</a></li>";
@@ -78,7 +81,7 @@ session_start();
                     }
                     ?>
                 </ul>
-        </div>
+            </div>
         </div>
     </nav>
 </header>
@@ -98,6 +101,7 @@ session_start();
             $category = ucfirst($row["category"]);
             echo "<h1 class='text-center content-heading'>" . $category . "s</h1>";
             for ($i = 0; $i < $num; $i++) {
+
                 $name = $row["name"];
                 echo "<div class='col-lg-10 col-lg-offset-1 col-md-10 col-sm-10 col-xs-12 product-thumbnail '>";
                 echo "<h3 class='text-center'>" . $name . "</h3> <br/>";
@@ -107,9 +111,9 @@ session_start();
                 echo "<div class=\"col-lg-5 col-md-4 col-sm-5 col-xs-12 \">";
                 echo "<p style='padding-top:75px'>". $description . "</p><br/>";
                 echo "<span class='fa fa-star checked'></span>";
-                echo "<span class='fa fa-star unchecked'></span>";
-                echo "<span class='fa fa-star unchecked'></span>";
-                echo "<span class='fa fa-star unchecked'></span>";
+                echo "<span class='fa fa-star checked'></span>";
+                echo "<span class='fa fa-star checked'></span>";
+                echo "<span class='fa fa-star checked'></span>";
                 echo "<span class='fa fa-star unchecked'></span>";
                 $storageAmount = $row["unitsInStorage"];
                 $price = number_format($row["price"], 2);
@@ -124,18 +128,24 @@ session_start();
                     echo "<option name='" . $options ."' value='" . $options . "'>" . $options . "</option>";
                 }
                 echo "</select></span>";
-                echo "<button class='btn btn-primary' name='submit' type='submit'><i class='fa fa-shopping-cart'></i> Add to Cart</button></span>";
+                if ($storageAmount == 0) {
+                    echo "<a class='btn bg-danger' name='no_inventory' id='myBtn'><i class='fa fa-shopping-cart'></i> No Inventory</a></span>";
+                } else {
+                    echo "<button class='btn bg-success btn-text-color' name='submit' type='submit'><i class='fa fa-shopping-cart'></i> Add to Cart</button></span>";
+                }
                 echo "</form>";
                 echo "</div>";
                 echo "</div>";
                 $row = $stmt->fetch();
             }
-    }
-    ?>
+            }
+            ?>
         </div>
     </div>
 
     <?php
+
+    $ok_to_purchase = True;
     if (!empty($_GET["action"])) {
         switch ($_GET["action"]) {
             case "add":
@@ -147,71 +157,84 @@ session_start();
                         $quantity = $_POST["quant"];
                         $id = $_GET["id"];
                         $productByCode = $stmt->fetch();
-                        $itemArray = array($productByCode["productID"] => array('quantity' => $quantity, 'image' => $productByCode["thumbnail"], 'price' => $productByCode["price"], 'productID' => $id, 'name' => $productByCode['name']));
-                        if (!empty($_SESSION["cart"])) {
-                            echo "Before: ";
-                            print_r($itemArray);
-                            if (array_key_exists($id, $_SESSION["cart"])) {
-                                echo "here1";
-                                $output = $_SESSION["cart"][$id];
-                                echo "<br/> output:";
-                                print_r($output);
-                                foreach ($_SESSION["cart"] as $key => $value) {
-                                    echo "here2";
-                                    echo "<br/> id: key: <br/>";
-                                    print_r($key);
-                                    if ($id == $key) {
-                                        echo "here3";
-                                        if (empty($_SESSION["cart"][$key]["quantity"])) {
-                                            $_SESSION["cart"][$key]["quantity"] = 0;
-                                            echo "here4";
-                                            print_r($_SESSION["cart"][$key]);
+                        $quantity_in_database = $productByCode["unitsInStorage"];
+                        if ($quantity > $quantity_in_database) {
+                            $ok_to_purchase = False;
+                        } else {
+                            $quantity_in_database -= $quantity;
+                            $update_quantity_query = "UPDATE products SET unitsInStorage=" . $quantity_in_database . " WHERE productID=" . $id;
+                            if ($conn->query($update_quantity_query) === TRUE) {
+                            }
+                            $itemArray = array($productByCode["productID"] => array('quantity' => $quantity, 'image' => $productByCode["thumbnail"], 'price' => $productByCode["price"], 'productID' => $id, 'name' => $productByCode['name']));
+                            if (!empty($_SESSION["cart"])) {
+                                if (array_key_exists($id, $_SESSION["cart"])) {
+                                    $output = $_SESSION["cart"][$id];
+                                    foreach ($_SESSION["cart"] as $key => $value) {
+                                        if ($id == $key) {
+                                            if (empty($_SESSION["cart"][$key]["quantity"])) {
+                                                $_SESSION["cart"][$key]["quantity"] = 0;
+                                            }
+                                            $_SESSION["cart"][$key]["quantity"] += $quantity;
                                         }
-                                        $_SESSION["cart"][$key]["quantity"] += $quantity;
-                                        echo "herealso";
-                                        print_r($_SESSION["cart"][$key]);
                                     }
+                                } else {
+                                    $_SESSION["cart"] = $_SESSION["cart"] + $itemArray;
                                 }
                             } else {
-                                $_SESSION["cart"] = $_SESSION["cart"] + $itemArray;
-                                echo "/////////////////////////////////////////////////////";
+                                $_SESSION["cart"] = $itemArray;
                             }
-                        } else {
-                            $_SESSION["cart"] = $itemArray;
-                            echo "*******************************************";
                         }
+
                     }
                 }
-                echo "Cart: <br/>";
-                print_r($_SESSION["cart"]);
                 break;
         }
     }
     unset($_GET['id']);
+
     ?>
 
 
+
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title text-center">No inventory</h4>
+                </div>
+                <div class="modal-body">
+                    <p>The item has not been added to your cart.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
 </main>
-<!--<script>-->
-<!---->
-<!--    var modal = document.getElementById("myModal");-->
-<!---->
-<!--    var img = $(".myImg");-->
-<!--    var modalImg = $("#img01");-->
-<!--    img.click(function () {-->
-<!--        modal.style.display = "block";-->
-<!--        var newSrc = this.src;-->
-<!--        modalImg.attr("src", newSrc);-->
-<!--    });-->
-<!---->
-<!--    var span = document.getElementsByClassName("close")[0];-->
-<!---->
-<!--    span.onclick = function () {-->
-<!--        modal.style.display = "none";-->
-<!---->
-<!--    };-->
-<!---->
-<!--</script>-->
+
+<script>
+    $(document).ready(function(){
+        $("#myBtn").click(function(){
+            $("#myModal").modal({backdrop: false });
+        });
+        $("body").on("click", ".modal-dialog", function(e) {
+            if ($(e.target).hasClass('modal-dialog')) {
+                var hidePopup = $(e.target.parentElement).attr('id');
+                $('#' + hidePopup).modal('hide');
+            }
+        });
+
+
+    });
+
+</script>
 
 
 </body>

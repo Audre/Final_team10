@@ -1432,7 +1432,7 @@ textarea {
 }
 
 a {
-    color: #df691a;
+    color: black;
     text-decoration: none;
 }
 
@@ -9044,9 +9044,9 @@ label {
   background-color: #45a049;
 }
 
-/*!*a {*!*/
-  /*!*color: ;*!*/
-/*!*}*!*/
+a .btn-text-color {
+    color: black;
+}
 
 hr {
   border: 1px solid lightgrey;
