@@ -1,6 +1,7 @@
 <?php
 require_once("Database.php");
 session_start();
+$ok_to_purchase = False;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -124,7 +125,14 @@ session_start();
                     echo "<option name='" . $options ."' value='" . $options . "'>" . $options . "</option>";
                 }
                 echo "</select></span>";
-                echo "<button class='btn btn-primary' name='submit' type='submit'><i class='fa fa-shopping-cart'></i> Add to Cart</button></span>";
+                if (!$ok_to_purchase) {
+                    echo "here";
+                    echo "<button class='btn btn-primary' name='submit' type='submit'><i class='fa fa-shopping-cart'></i> Add to Cart</button></span>";
+
+                } else {
+                    echo "not here";
+                    echo "<button class='btn btn-primary' name='button' type='button' data-toggle='modal' data-target='#myModal' id='myBtn'><i class='fa fa-shopping-cart'></i> Add to Cart</button></span>";
+                }
                 echo "</form>";
                 echo "</div>";
                 echo "</div>";
@@ -136,6 +144,8 @@ session_start();
     </div>
 
     <?php
+
+    $ok_to_purchase = True;
     if (!empty($_GET["action"])) {
         switch ($_GET["action"]) {
             case "add":
@@ -148,46 +158,63 @@ session_start();
                         $id = $_GET["id"];
                         $productByCode = $stmt->fetch();
                         $quantity_in_database = $productByCode["unitsInStorage"];
-                        echo $quantity_in_database;
                         if ($quantity > $quantity_in_database) {
-
-                            echo "Not enough inventory.";
+                            $ok_to_purchase = False;
                         } else {
                             $quantity_in_database -= $quantity;
                             $update_quantity_query = "UPDATE products SET unitsInStorage=" . $quantity_in_database . " WHERE productID=" . $id;
                             if ($conn->query($update_quantity_query) === TRUE) {
-                                echo "record updated";
-                                header("refresh: 3;");
                             }
-                            echo $quantity_in_database;
-                        }
-                        $itemArray = array($productByCode["productID"] => array('quantity' => $quantity, 'image' => $productByCode["thumbnail"], 'price' => $productByCode["price"], 'productID' => $id, 'name' => $productByCode['name']));
-                        if (!empty($_SESSION["cart"])) {
-                            if (array_key_exists($id, $_SESSION["cart"])) {
-                                $output = $_SESSION["cart"][$id];
-                                foreach ($_SESSION["cart"] as $key => $value) {
-                                    if ($id == $key) {
-                                        if (empty($_SESSION["cart"][$key]["quantity"])) {
-                                            $_SESSION["cart"][$key]["quantity"] = 0;
+                            $itemArray = array($productByCode["productID"] => array('quantity' => $quantity, 'image' => $productByCode["thumbnail"], 'price' => $productByCode["price"], 'productID' => $id, 'name' => $productByCode['name']));
+                            if (!empty($_SESSION["cart"])) {
+                                if (array_key_exists($id, $_SESSION["cart"])) {
+                                    $output = $_SESSION["cart"][$id];
+                                    foreach ($_SESSION["cart"] as $key => $value) {
+                                        if ($id == $key) {
+                                            if (empty($_SESSION["cart"][$key]["quantity"])) {
+                                                $_SESSION["cart"][$key]["quantity"] = 0;
+                                            }
+                                            $_SESSION["cart"][$key]["quantity"] += $quantity;
                                         }
-                                        $_SESSION["cart"][$key]["quantity"] += $quantity;
                                     }
+                                } else {
+                                    $_SESSION["cart"] = $_SESSION["cart"] + $itemArray;
                                 }
                             } else {
-                                $_SESSION["cart"] = $_SESSION["cart"] + $itemArray;
+                                $_SESSION["cart"] = $itemArray;
                             }
-                        } else {
-                            $_SESSION["cart"] = $itemArray;
                         }
+
                     }
                 }
-                echo "Cart: <br/>";
-                print_r($_SESSION["cart"]);
                 break;
         }
     }
     unset($_GET['id']);
+
     ?>
+
+
+
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Some text in the modal.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 
 </main>
@@ -212,6 +239,22 @@ session_start();
 <!---->
 <!--</script>-->
 
+<script>
+    $(document).ready(function(){
+        $("#myBtn").click(function(){
+            $("#myModal").modal({backdrop: false });
+        });
+        $("body").on("click", ".modal-dialog", function(e) {
+            if ($(e.target).hasClass('modal-dialog')) {
+                var hidePopup = $(e.target.parentElement).attr('id');
+                $('#' + hidePopup).modal('hide');
+            }
+        });
+
+
+    });
+
+</script>
 
 </body>
 </html>
