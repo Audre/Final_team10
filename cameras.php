@@ -129,7 +129,7 @@ $ok_to_purchase = False;
                 }
                 echo "</select></span>";
                 if ($storageAmount == 0) {
-                    echo "<a class='btn bg-danger' name='no_inventory' id='myBtn'><i class='fa fa-shopping-cart'></i> No Inventory</a></span>";
+                    echo "<a class='btn bg-danger myBtn' name='no_inventory'><i class='fa fa-shopping-cart'></i> No Inventory</a></span>";
                 } else {
                     echo "<button class='btn bg-success btn-text-color' name='submit' type='submit'><i class='fa fa-shopping-cart'></i> Add to Cart</button></span>";
                 }
@@ -241,7 +241,7 @@ $ok_to_purchase = False;
 
 <script>
     $(document).ready(function(){
-        $("#myBtn").click(function(){
+        $(".myBtn").click(function(){
             $("#myModal").modal({backdrop: false });
         });
         $("body").on("click", ".modal-dialog", function(e) {

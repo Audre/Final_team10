@@ -9095,3 +9095,7 @@ h3, label,h4{
 .product-alignment {
     padding-left: 12%;
 }
+
+.low-inventory {
+    font-size: large;
+}

@@ -93,6 +93,18 @@ session_start();
     if (!empty($_GET["action"])) {
         switch ($_GET["action"]) {
             case "empty":
+                foreach ($_SESSION["cart"] as $item) {
+                    print_r($item);
+                    echo "<br/>";
+
+                    $query = "SELECT * FROM products WHERE productID=" . $item["productID"];
+                    $stmt = $conn->prepare($query);
+                    $stmt->execute();
+                    $result = $stmt->fetch();
+                    print_r($result);
+
+                }
+
                 unset($_SESSION["cart"]);
                 break;
             case "remove":

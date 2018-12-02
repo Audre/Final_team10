@@ -92,9 +92,12 @@ if (!isset($_SESSION["logged_in"])) {
     </nav>
 </header>
 <main>
+    <?php
+    if ($_SESSION["first_name"] == "admin") {
 
-    <!-- Page Container -->
-    <div class="w3-content w3-margin-top" style="max-width:1400px;">
+        ?>
+
+        <div class="w3-content w3-margin-top" style="max-width:1400px;">
 
         <!-- The Grid -->
         <div class="w3-row-padding">
@@ -107,32 +110,37 @@ if (!isset($_SESSION["logged_in"])) {
                         <img src="images/blank-profile-picture.png" style="width:100%" alt="Avatar">
                         <div class="w3-display-bottomleft w3-container w3-text-black">
                             <h2><?php echo $_SESSION["first_name"] . " " . $_SESSION["last_name"]; ?></h2>
-                        </div>
-                    </div>
-                    <div class="w3-container">
-                        <p><i class="fa fa-user fa-fw w3-margin-right w3-large w3-text-teal"></i>
-                            <?php echo $_SESSION["first_name"] . " " . $_SESSION["last_name"]; ?></p>
-                        <p><i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>London, UK</p>
-                        <p><i class="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-teal"></i>
-                            <?php echo $_SESSION["email"]; ?></p>
-                        <p><i class="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>1224435534</p>
-                        <p><i class="fa fa-gift fa-fw w3-margin-right w3-large w3-text-teal"></i>
-                            <?php echo $_SESSION["giftcard_balance"]; ?></p>
-                        <hr>
-                    </div>
-                </div><br>
+        </div>
+        </div>
+        <div class="w3-container">
+            <p><i class="fa fa-user fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                <?php echo $_SESSION["first_name"] . " " . $_SESSION["last_name"]; ?></p>
+            <p><i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>London, UK</p>
+            <p><i class="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                <?php echo $_SESSION["email"]; ?></p>
+            <p><i class="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>1224435534</p>
+            <p><i class="fa fa-gift fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                <?php echo $_SESSION["giftcard_balance"]; ?></p>
+            <hr>
+        </div>
+        </div><br>
 
-                <!-- End Left Column -->
-            </div>
+        <!-- End Left Column -->
+        </div>
 
-            <!-- Right Column -->
-            <div class="w3-twothird">
-                <div class="w3-container w3-card w3-white w3-margin-bottom">
-                    <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-credit-card fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Orders</h2>
+        <!-- Right Column -->
+        <div class="w3-twothird">
+            <div class="w3-container w3-card w3-white w3-margin-bottom">
+                <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-credit-card fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Orders</h2>
 
-                    <?php
-
-                    $query = "SELECT DISTINCT orderID FROM orders WHERE userID=" . $_SESSION["userID"];
+                <?php
+                $user_query = "SELECT DISTINCT userID FROM orders";
+                $sql = $conn->prepare($user_query);
+                $sql->execute();
+                $users = $sql->fetchAll();
+                //$user_ids = [];
+                foreach ($users as $user) {
+                    $query = "SELECT DISTINCT orderID FROM orders WHERE userID=" . $user["userID"];
                     $stmt = $conn->prepare($query);
                     $stmt->execute();
                     $num = $stmt->rowCount();
@@ -140,8 +148,13 @@ if (!isset($_SESSION["logged_in"])) {
                         for ($i = 0; $i < $num; $i++) {
                             $result = $stmt->fetchAll();
                             foreach ($result as $order) {
+                                $user_id_query = "SELECT * FROM users WHERE userID=" . $user["userID"];
+                                $user_stmt = $conn->prepare($user_id_query);
+                                $user_stmt->execute();
+                                $user_result = $user_stmt->fetch();
                                 echo "<div class=\"w3-container\">";
                                 echo "<h5 class=\"w3-opacity\"><b>Order Number: " . $order[0] . "</b></h5>";
+                                echo "<h5 class=\"w3-opacity\"><b>Name: " . $user_result["first_name"] . " " . $user_result["last_name"] . "</b></h5>";
                                 echo "<h6 class=\"w3-text-teal\"><i class=\"fa fa-calendar fa-fw w3-margin-right\">";
 
                                 $query2 = "SELECT * FROM orders WHERE orderID=" . $order[$i];
@@ -188,6 +201,7 @@ if (!isset($_SESSION["logged_in"])) {
                                 echo "</div>";
                             }
                         }
+                        echo "</div>";
 
                     } else {
                         echo "<div class=\"w3-container\">";
@@ -198,7 +212,155 @@ if (!isset($_SESSION["logged_in"])) {
 
                     }
 
+                }
+                echo "<div class=\"w3-container w3-card w3-white w3-margin-bottom\">";
+                echo "<h2 class=\"w3-text-grey w3-padding-16\"><i class=\"fa fa-credit-card fa-fw w3-margin-right w3-xxlarge w3-text-teal\"></i>Inventory</h2>";
+
+                $inventory_query = "SELECT * FROM products";
+                $inventory_stmt = $conn->prepare($inventory_query);
+                $inventory_stmt->execute();
+                $inventory = $inventory_stmt->fetchAll();
+                foreach ($inventory as $item) {
+                    echo "<div class=\"w3-container\">";
+                    echo "<h5 class=\"w3-opacity\"><b>Item: " . $item["name"] . "</b></h5>";
+                    if ($item["unitsInStorage"] < 5) {
+                        echo "<p class='text-danger low-inventory'>Items in Storage: " . $item["unitsInStorage"] . "</p>";
+                        echo "<a class='btn btn-danger myBtn' name='add_amount' id='".$item["productID"] ."'>Add Inventory</a>";
+                    } else {
+                        echo "<p>Items in Storage: " . $item["unitsInStorage"] . "</p>";
+                    }
+
+                    echo "<hr>";
+                    echo "</div>";
+
+
+                }
+
+
+                echo "</div>";
+
+        echo "</div>";
+
+
+    } else {
+
+
+                ?>
+
+                <!-- Page Container -->
+                <div class="w3-content w3-margin-top" style="max-width:1400px;">
+
+                    <!-- The Grid -->
+                    <div class="w3-row-padding">
+
+                        <!-- Left Column -->
+                        <div class="w3-third">
+
+                            <div class="w3-white w3-text-grey w3-card-4">
+                                <div class="w3-display-container">
+                                    <img src="images/blank-profile-picture.png" style="width:100%" alt="Avatar">
+                                    <div class="w3-display-bottomleft w3-container w3-text-black">
+                                        <h2><?php echo $_SESSION["first_name"] . " " . $_SESSION["last_name"]; ?></h2>
+                                    </div>
+                                </div>
+                                <div class="w3-container">
+                                    <p><i class="fa fa-user fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                                        <?php echo $_SESSION["first_name"] . " " . $_SESSION["last_name"]; ?></p>
+                                    <p><i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>London, UK
+                                    </p>
+                                    <p><i class="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                                        <?php echo $_SESSION["email"]; ?></p>
+                                    <p><i class="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>1224435534
+                                    </p>
+                                    <p><i class="fa fa-gift fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                                        <?php echo $_SESSION["giftcard_balance"]; ?></p>
+                                    <hr>
+                                </div>
+                            </div>
+                            <br>
+
+                            <!-- End Left Column -->
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="w3-twothird">
+                            <div class="w3-container w3-card w3-white w3-margin-bottom">
+                                <h2 class="w3-text-grey w3-padding-16"><i
+                                            class="fa fa-credit-card fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Orders
+                                </h2>
+
+                                <?php
+
+                                $query = "SELECT DISTINCT orderID FROM orders WHERE userID=" . $_SESSION["userID"];
+                                $stmt = $conn->prepare($query);
+                                $stmt->execute();
+                                $num = $stmt->rowCount();
+                                if ($num) {
+                                    for ($i = 0; $i < $num; $i++) {
+                                        $result = $stmt->fetchAll();
+                                        foreach ($result as $order) {
+                                            echo "<div class=\"w3-container\">";
+                                            echo "<h5 class=\"w3-opacity\"><b>Order Number: " . $order[0] . "</b></h5>";
+                                            echo "<h6 class=\"w3-text-teal\"><i class=\"fa fa-calendar fa-fw w3-margin-right\">";
+
+                                            $query2 = "SELECT * FROM orders WHERE orderID=" . $order[$i];
+                                            $stmt2 = $conn->prepare($query2);
+                                            $stmt2->execute();
+                                            $orders = $stmt2->fetchAll();
+                                            $products = [];
+                                            $quantity = [];
+                                            $price = [];
+                                            $date = $orders[0]["date"];
+                                            $total_cost = 0;
+                                            //print_r($orders);
+                                            echo "<br/>";
+                                            echo "</i>" . $date . "<span class=\"w3-tag w3-teal w3-round\"></span></h6>";
+
+                                            foreach ($orders as $item) {
+                                                $total_order = array($item["productID"], $item["quantity"], $item["price"]);
+
+                                                array_push($products, $item["productID"]);
+                                                array_push($quantity, $item["quantity"]);
+                                                array_push($price, $item["price"]);
+
+
+                                                for ($j = 0; $j < count($products); $j++) {
+                                                    $query3 = "SELECT * FROM products WHERE productID=" . $total_order[0];
+                                                    $stmt3 = $conn->prepare($query3);
+                                                    $stmt3->execute();
+                                                    $product_info = $stmt3->fetch();
+                                                    echo "<div class='row'>";
+                                                    echo "<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12 w3-opacity account-item' >Item: " . $product_info["name"] . "</div></div>";
+
+                                                }
+                                                echo "<div class='row'>";
+                                                echo "<div class='col-lg-offset-1 col-lg-4 col-md-4 col-sm-4 col-xs-12 w3-opacity'>Quantity: " . $item["quantity"] . "</div>";
+                                                echo "<div class='col-lg-4 col-md-4 col-sm-4 col-xs-12 w3-opacity'>Price: " . $item["price"] . "</div>";
+                                                echo "</div>";
+                                                echo "<br/>";
+                                                $total_cost += $item["price"];
+
+                                                $products = [];
+                                            }
+                                            echo "<p class='account-total w3-opacity'>Total Price: " . $total_cost . "</p>";
+                                            echo "<hr>";
+                                            echo "</div>";
+                                        }
+                                    }
+
+                                } else {
+                                    echo "<div class=\"w3-container\">";
+                                    echo "<h5 class=\"w3-opacity\"><b>No Orders</b></h5>";
+                                    echo "<hr>";
+                                    echo "</div>";
+                                    echo "</div>";
+
+                                }
+    }
+
                     ?>
+
+                </div>
 
 <!--                    <div class="w3-container">-->
 <!--                        <h5 class="w3-opacity"><b>Web Developer / something.com</b></h5>-->
@@ -211,7 +373,7 @@ if (!isset($_SESSION["logged_in"])) {
 <!--                        <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Jun 2010 - Mar 2012</h6>-->
 <!--                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p><br>-->
 <!--                    </div>-->
-                </div>
+
 
 
 <!--                <div class="w3-container w3-card w3-white w3-margin-bottom">-->
@@ -265,70 +427,90 @@ if (!isset($_SESSION["logged_in"])) {
         <!-- End Page Container -->
     </div>
 
+                <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Add to Inventory</h4>
+                            </div>
+                            <div class="modal-body">
+                                <br/>
+                                <form method="post" id="insert_form">
+                                    <label for="product" >Product ID: <input id="productID" name="productID" type="number" max="5"/></label>
+                                    <label for="amount">Amount: <input id="unitsInStorage" type="number" name="unitsInStorage"/> </label>
+
+                                    <button type="submit" id="add" name="add_to_inventory" value="" class="btn btn-checkout">Add to Inventory</button>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-dismiss="modal" id="close">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
 
 </main>
 <script>
-
     $(document).ready(function(){
+        $(".myBtn").click(function(){
+            $("#myModal").modal({backdrop: false });
+        });
+        $("body").on("click", ".modal-dialog", function(e) {
+            if ($(e.target).hasClass('modal-dialog')) {
+                var hidePopup = $(e.target.parentElement).attr('id');
+                $('#' + hidePopup).modal('hide');
+            }
+        });
 
-        // create variable to hold the current modal window
-        var activeWindow;
+        $(document).on('submit','#insert_form',function(e) {
+            var data = $("#productID").serialize();
+            var data2 = $("#unitsInStorage").serialize();
 
-        $('a.modalLink').click(function(e){
+            $.ajax({
+                data: {data, data2},
+                type: "post",
+                url: "add_inventory.php",
+                success: function(data, data2){
+                    alert("Data: " + data, data2);
+                }
+            });
+        });
 
-            // cancel the default link behaviour
-            e.preventDefault();
+        $(document).on('click', "#1", function () {
+            $("#productID").val("1");
+        });
 
-            // find the href of the link that was clicked to use as an id
-            var id = $(this).attr('href');
+        $(document).on('click', "#2", function () {
+            $("#productID").val("2");
+        });
 
-            // assign the window with matching id to the activeWindow variable, move it to the center of the screen and fade in
-            activeWindow = $('.window#' + id)
-                .css('opacity', '0') // set to an initial 0 opacity
-                .css('top', '50%') // position vertically at 50%
-                .css('left', '50%') // position horizontally at 50%
-                .fadeTo(500, 1); // fade to an opacity of 1 (100%) over 500 milliseconds
+        $(document).on('click', "#3", function () {
+            $("#productID").val("3");
+        });
 
-            // create blind and fade in
-            $('#modal')
-                .append('<div id="blind" />') // create a <div> with an id of 'blind'
-                .find('#blind') // select the div we've just created
-                .css('opacity', '0') // set the initial opacity to 0
-                .fadeTo(500, 0.8) // fade in to an opacity of 0.8 (80%) over 500 milliseconds
-                .click(function(e){
-                    closeModal(); // close modal if someone clicks anywhere on the blind (outside of the window)
-                });
+        $(document).on('click', "#4", function () {
+            $("#productID").val("4");
+        });
+
+        $(document).on('click', "#5", function () {
+            $("#productID").val("5");
+        });
+
+        $(document).on('submit', "#insert_form", function () {
+            location.reload();
 
         });
 
-        $('a.close').click(function(e){
-            // cancel default behaviour
-            e.preventDefault();
 
-            // call the closeModal function passing this close button's window
-            closeModal();
-        });
 
-        function closeModal()
-        {
 
-            // fade out window and then move back to off screen when fade completes
-            activeWindow.fadeOut(250, function(){ $(this).css('top', '-1000px').css('left', '-1000px'); });
-
-            // fade out blind and then remove it
-            $('#blind').fadeOut(250,    function(){ $(this).remove(); });
-
-        }
 
     });
 
-    // When the user clicks anywhere outside of the modal, close it
-    var modal = document.getElementById('ticketModal');
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
 </script>
 
 
