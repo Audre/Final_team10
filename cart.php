@@ -134,7 +134,7 @@ session_start();
                     <td style="text-align:center;"><?php echo "\xf0\x9f\x8d\x8d " . $item["price"]; ?></td>
                     <td style="text-align:center;"><?php echo "\xf0\x9f\x8d\x8d " . number_format($item_price, 2); ?></td>
                     <td style="text-align:center;"><a href="cart.php?action=remove&id=<?php echo $item["productID"]; ?>"
-                                                      class="btn bg-info"><i class="fa fa-trash"></i> Remove</a></td>
+                                                      class="btn btn-checkout"><i class="fa fa-trash"></i> Remove</a></td>
                 </tr>
                 <?php
                 $total_quantity += $item["quantity"];
@@ -153,7 +153,7 @@ session_start();
         <br/>
         <div >
             <form action='cart.php?action=checkout' method='POST'>
-                <a href="checkout.php" class='btn btn-primary' name='submit' type='submit'><i class='fa fa-credit-card'></i> Checkout</a>
+                <a href="checkout.php" class='btn-checkout btn-primary' name='submit' type='submit'><i class='fa fa-credit-card'></i> Checkout</a>
             </form>
         </div>
         <?php

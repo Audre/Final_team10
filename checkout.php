@@ -96,12 +96,12 @@ if (!isset($_SESSION["logged_in"])) {
 </header>
 <main>
 
-<div class="row">
+<div class="container-checkout">
   <div class="col-75">
-    <div class="container">
+    <div class="container-checkout">
       <form action="/action_page.php">
       
-        <div class="row">
+        <div class="row-checkout">
           <div class="col-50">
 
             <h3>Billing Address</h3>
@@ -114,7 +114,7 @@ if (!isset($_SESSION["logged_in"])) {
             <label for="city"><i class="fa fa-institution"></i> City</label>
             <input type="text" id="city" name="city" placeholder="New York">
 
-            <div class="row">
+            <div class="row-checkout">
               <div class="col-50">
                 <label for="state">State</label>
                 <input type="text" id="state" name="state" placeholder="NY">
@@ -166,7 +166,7 @@ if (!isset($_SESSION["logged_in"])) {
         </label>
          <div >
             <form action='checkout.php?action=continuecheckout' method='POST'>
-                <a href="confirm.php" class='btn btn-primary' name='submit' type='submit'><i class='fa fa-credit-card'></i>Continue to Checkout</a>
+                <a href="confirm.php" class='btn-checkout btn-primary' name='submit' type='submit'><i class='fa fa-credit-card'></i>Continue to Checkout</a>
             </form>
         </div>
     </div>

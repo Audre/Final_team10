@@ -92,13 +92,14 @@ $ok_to_purchase = False;
     $num = $stmt->rowCount();
     if ($num) {
     ?>
-    <div class="container-fluid" style="padding-left: 5%">
+    <div class="container-fluid product-alignment" >
             <?php
             $row = $stmt->fetch();
             $category = ucfirst($row["category"]);
             echo "<h1 class='text-center content-heading'>" . $category . "s</h1>";
+            echo "<div class=\"row\">";
             for ($i = 0; $i < $num; $i++) {
-                echo "<div class=\"row\">";
+
                 $name = $row["name"];
                 echo "<div class='col-lg-10 col-lg-offset-1 col-md-10 col-sm-10 col-xs-12 product-thumbnail '>";
                 echo "<h3 class='text-center'>" . $name . "</h3> <br/>";
@@ -125,13 +126,10 @@ $ok_to_purchase = False;
                     echo "<option name='" . $options ."' value='" . $options . "'>" . $options . "</option>";
                 }
                 echo "</select></span>";
-                if (!$ok_to_purchase) {
-                    echo "here";
-                    echo "<button class='btn btn-primary' name='submit' type='submit'><i class='fa fa-shopping-cart'></i> Add to Cart</button></span>";
-
+                if ($storageAmount == 0) {
+                    echo "<button class='btn bg-danger' name='button' data-toggle='modal' data-target='#myModal' id='myBtn'><i class='fa fa-shopping-cart'></i> No Inventory</button></span>";
                 } else {
-                    echo "not here";
-                    echo "<button class='btn btn-primary' name='button' type='button' data-toggle='modal' data-target='#myModal' id='myBtn'><i class='fa fa-shopping-cart'></i> Add to Cart</button></span>";
+                    echo "<button class='btn bg-success btn-text-color' name='submit' type='submit'><i class='fa fa-shopping-cart'></i> Add to Cart</button></span>";
                 }
                 echo "</form>";
                 echo "</div>";
