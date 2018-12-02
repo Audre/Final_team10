@@ -46,6 +46,7 @@ if (isset($_POST["login"])) {
                 $_SESSION["first_name"] = $result["first_name"];
                 $_SESSION["last_name"] = $result["last_name"];
                 $_SESSION["giftcard_balance"] = $result["giftcard_balance"];
+                $_SESSION["userID"] = $result["userID"];
                 $_SESSION["success"] = "You are now logged in.";
                 $_SESSION["logged_in"] = true;
                 header('Location: account.php');

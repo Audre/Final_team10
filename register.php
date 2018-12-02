@@ -70,6 +70,8 @@ if (isset($_POST["submit"])) {
             $_SESSION["email"] = $email;
             $_SESSION["first_name"] = $first_name;
             $_SESSION["last_name"] = $last_name;
+            $_SESSION["userID"] = $result2["userID"];
+            $_SESSION["giftcard_balance"] = $result2["giftcard_balance"];
             $_SESSION["success"] = "You are now logged in.";
             $_SESSION["logged_in"] = true;
             header('Location: account.php');
