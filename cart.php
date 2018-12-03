@@ -93,15 +93,50 @@ session_start();
     if (!empty($_GET["action"])) {
         switch ($_GET["action"]) {
             case "empty":
+                foreach ($_SESSION["cart"] as $item) {
+                    $productID = $item["productID"];
+                    $quantity_to_add_back = $item["quantity"];
+                    $product_query = "SELECT unitsInStorage FROM products WHERE productID=" . $item["productID"];
+                    $product_stmt = $conn->prepare($product_query);
+                    $product_stmt->execute();
+                    $product_result = $product_stmt->fetch();
+
+                    $updated_quantity_amount = $quantity_to_add_back += $product_result[0];
+
+                    $quantity_update = "UPDATE products SET unitsInStorage=" . $updated_quantity_amount .
+                                    " WHERE productID=" . $item["productID"];
+
+                    $conn->query($quantity_update);
+
+
+                }
                 unset($_SESSION["cart"]);
                 break;
             case "remove":
                 if (!empty($_SESSION["cart"])) {
                     foreach ($_SESSION["cart"] as $k => $v) {
-                        if ($_GET["id"] == $k)
+                        if ($_GET["id"] == $k) {
+                            $productID = $k;
+                            $quantity_to_add_back = $v["quantity"];
+                            $product_query = "SELECT unitsInStorage FROM products WHERE productID=" . $productID;
+                            $product_stmt = $conn->prepare($product_query);
+                            $product_stmt->execute();
+                            $product_result = $product_stmt->fetch();
+
+                            $updated_quantity_amount = $quantity_to_add_back += $product_result[0];
+
+                            $quantity_update = "UPDATE products SET unitsInStorage=" . $updated_quantity_amount .
+                                " WHERE productID=" . $productID;
+
+                            $conn->query($quantity_update);
                             unset($_SESSION["cart"][$k]);
-                        if (empty($_SESSION["cart"]))
+
+                        }
+
+                        if (empty($_SESSION["cart"])){
                             unset($_SESSION["cart"]);
+                        }
+
                     }
                 }
                 break;
