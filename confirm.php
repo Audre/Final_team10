@@ -2,16 +2,8 @@
 require_once("Database.php");
 session_start();
 
-
 if (!isset($_SESSION["logged_in"])) {
     header("Location: login.php");
-} else {
-    $gc_query = "SELECT giftcard_balance FROM users WHERE userID=" . $_SESSION["userID"];
-    $gc_stmt = $conn->prepare($gc_query);
-    $gc_stmt->execute();
-    $gc_balance = $gc_stmt->fetch();
-
-    $_SESSION["giftcard_balance"] = $gc_balance[0];
 }
 
 ?>
@@ -181,10 +173,10 @@ if (!isset($_SESSION["logged_in"])) {
 
             </div>
             <br/>
-            <form action="thankyou.php?action=place_order" method='POST'>
+            <form action='cart.php?action=checkout' method='POST'>
                 <div class="text-center">
-                    <a href="thankyou.php?action=order"
-                       class="btn-checkout"><i class="fa fa-credit-card"></i>Place Order</a>
+                    <a href="thankyou.php" class='btn-checkout btn-primary ' name='submit' type='submit'><i class='fa fa-credit-card'></i>Place Order</a>
+
                 </div>
 
             </form>
@@ -194,10 +186,12 @@ if (!isset($_SESSION["logged_in"])) {
     } else {
         echo "<div class=\"no-records\">Your Cart is Empty</div>";
     }
-
     ?>
 
 
 </main>
 </body>
+<footer>
+ <small>&copy; Copyright 2018, A&K Photography</small>
+</footer>
 </html>
