@@ -152,12 +152,12 @@ session_start();
         <table class="tbl-cart" cellpadding="10" cellspacing="1">
             <tbody>
             <tr>
-                <th style="text-align:center;">Name</th>
-                <th style="text-align:left;">Product ID</th>
-                <th style="text-align:center;" width="5%">Quantity</th>
-                <th style="text-align:center;" width="10%">Unit Price</th>
-                <th style="text-align:center;" width="10%">Price</th>
-                <th style="text-align:center;" width="5%">Remove</th>
+                <th class="text-center" >Name</th>
+                <th class="align-left">Product ID</th>
+                <th class="text-center" width="5%">Quantity</th>
+                <th class="text-center" width="10%">Unit Price</th>
+                <th class="text-center" width="10%">Price</th>
+                <th class="text-center" width="5%">Remove</th>
             </tr>
             <?php
             foreach ($_SESSION["cart"] as $item) {

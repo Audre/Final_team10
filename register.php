@@ -161,9 +161,9 @@ if (isset($_POST["submit"])) {
                 <input required type="text" name="first_name" placeholder="First Name"/>
                 <input required type="text" name="last_name" placeholder="Last Name"/>
                 <input required type="text" name="email" placeholder="Email"/>
-                <input type="password" name="password" placeholder="Password"/>
-                <input required type="password" name="password2" placeholder="Confirm Password"/>
-                <!--                <input required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" type="password" name="password" placeholder="Password"/>-->
+                <input type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" name="password" placeholder="Password"/>
+                <input required type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" name="password2" placeholder="Confirm Password"/>
+                <!--                <input required  type="password" name="password" placeholder="Password"/>-->
                 <!--                <input required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" type="password" name="password2" placeholder="Confirm Password"/>-->
                 <button type="submit" name="submit" class="center-block btn btn-primary btn-lg">Register</button>
             </form>
