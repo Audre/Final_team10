@@ -131,7 +131,7 @@ $ok_to_purchase = False;
             if ($storageAmount == 0) {
                 echo "<a class='btn bg-danger myBtn' name='no_inventory'><i class='fa fa-shopping-cart'></i> No Inventory</a></span>";
             } else {
-                echo "<button class='btn bg-success btn-text-color' name='submit' type='submit'><i class='fa fa-shopping-cart'></i> Add to Cart</button></span>";
+                echo "<button class='btn bg-success btn-text-color' name='submit' type='submit' id='" . $productID . "'><i class='fa fa-shopping-cart'></i> Add to Cart</button></span>";
             }
             echo "</form>";
             echo "</div>";
@@ -249,6 +249,11 @@ $ok_to_purchase = False;
                 var hidePopup = $(e.target.parentElement).attr('id');
                 $('#' + hidePopup).modal('hide');
             }
+        });
+
+        $(document).on('submit', "#1", function () {
+            location.reload();
+
         });
 
 
