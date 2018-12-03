@@ -122,7 +122,7 @@ session_start();
                         $query2 = "INSERT INTO orders (orderID, userID, productiD, quantity, price, date) 
                                     VALUES(" . $orderID . ", " . $userID .", " . $productID . ", " . $quantity . ", " . $price . ", " . $date . ")";
 
-                        
+
                         $user_query = "UPDATE users SET giftcard_balance =" . $total_gc_balance . " WHERE userID=" . $userID;
 
 
@@ -134,6 +134,7 @@ session_start();
                     }
 
                 }
+                unset($_SESSION["cart"]);
                 echo "<div class=\"txt-heading\">Thank you! Your order has been placed! </div>";
         }
     } else {
