@@ -122,12 +122,8 @@ session_start();
                         $query2 = "INSERT INTO orders (orderID, userID, productiD, quantity, price, date) 
                                     VALUES(" . $orderID . ", " . $userID .", " . $productID . ", " . $quantity . ", " . $price . ", " . $date . ")";
 
-
-
+                        
                         $user_query = "UPDATE users SET giftcard_balance =" . $total_gc_balance . " WHERE userID=" . $userID;
-                        echo "Price: " . $price;
-                        echo "<br/>";
-                        echo "user id: " . $userID;
 
 
                         if ($conn->query($query2) === FALSE || $conn->query($user_query) === FALSE) {
