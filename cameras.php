@@ -121,17 +121,27 @@ $ok_to_purchase = False;
             echo "<p>Total Items: ". $storageAmount . "</p>";
             $productID = $row["productID"];
             echo "<form action='cameras.php?action=add&id=" . $productID . "&quant=' method='POST'>";
-            echo "<span>";
-            echo "<select class='selectContainer' name='quant'>";
-            echo "<option value='' selected>Quantity</option>";
-            for ($options = 1; $options <= 5; $options++) {
-                echo "<option name='" . $options ."' value='" . $options . "'>" . $options . "</option>";
-            }
-            echo "</select></span>";
             if ($storageAmount == 0) {
-                echo "<a class='btn bg-danger myBtn' name='no_inventory'><i class='fa fa-shopping-cart'></i> No Inventory</a></span>";
+                echo "<span>";
+                echo "<select class='selectContainer' name='quant'>";
+                echo "<option value='' selected>0</option>";
+                echo "</select></span>";
+                echo "<a class='btn bg-danger' name='no_inventory' id='myBtn'><i class='fa fa-shopping-cart'></i> No Inventory</a></span>";
             } else {
-                echo "<button class='btn bg-success btn-text-color' name='submit' type='submit' id='" . $productID . "'><i class='fa fa-shopping-cart'></i> Add to Cart</button></span>";
+                echo "<span>";
+                echo "<select class='selectContainer' name='quant'>";
+                echo "<option value='' selected>1</option>";
+                $amount_to_sell = 0;
+                if ($storageAmount > 5) {
+                    $amount_to_sell = 5;
+                } else {
+                    $amount_to_sell = $storageAmount;
+                }
+                for ($options = 2; $options <= $amount_to_sell; $options++) {
+                    echo "<option name='" . $options ."' value='" . $options . "'>" . $options . "</option>";
+                }
+                echo "</select></span>";
+                echo "<button class='btn bg-success btn-text-color' name='submit' type='submit'><i class='fa fa-shopping-cart'></i> Add to Cart</button></span>";
             }
             echo "</form>";
             echo "</div>";
@@ -209,7 +219,7 @@ $ok_to_purchase = False;
                     <p>The item has not been added to your cart.</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="close" data-dismiss="modal">Close</button>
                 </div>
             </div>
 
@@ -251,7 +261,7 @@ $ok_to_purchase = False;
             }
         });
 
-        $(document).on('submit', "#1", function () {
+        $(document).on('click', "#close", function () {
             location.reload();
 
         });

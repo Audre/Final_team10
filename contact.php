@@ -203,7 +203,7 @@ session_start();
                                     var marker = new google.maps.Marker({position: myCenter});
                                     marker.setMap(map);
                                 }
-                            </script> 
+                            </script>
                             <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyChS1wSaaB_NbJB_V4gn6dcunJZwQer-C8&callback=myMap"></script>
                         </div>
                     </div>

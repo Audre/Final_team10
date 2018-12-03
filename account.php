@@ -293,8 +293,8 @@ if (!isset($_SESSION["logged_in"])) {
                             <div class="w3-twothird">
                                 <div class="w3-container w3-card w3-white w3-margin-bottom">
                                     <h2 class="w3-text-grey w3-padding-16"><i
-                                                class="fa fa-credit-card fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Orders
-                                    </h2>
+                                                class="fa fa-credit-card fa-fw w3-margin-right w3-xxlarge w3-text-teal">
+                                        </i>Orders</h2>
 
                                     <?php
 
