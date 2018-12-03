@@ -93,7 +93,7 @@ session_start();
     $num = $stmt->rowCount();
     if ($num) {
     ?>
-    <div class="container-fluid product-alignment">
+    <div class="container-fluid" style="padding-left: 5%">
         <div class="row">
 
             <?php
@@ -108,8 +108,10 @@ session_start();
                 echo "<div class=\"col-lg-3 col-lg-offset-1 col-md-4 col-sm-5 col-xs-12 \">";
                 echo "<img class=\"product-thumbnail img-responsive\" src=\"images/products/" . $row["imagePath"] . "\"></div>";
                 $description = $row["description"];
+                $rating = $row["rating"];
                 echo "<div class=\"col-lg-5 col-md-4 col-sm-5 col-xs-12 \">";
                 echo "<p style='padding-top:75px'>". $description . "</p><br/>";
+                echo "<p>User Rating: ". $rating . "</p>";
                 echo "<span class='fa fa-star checked'></span>";
                 echo "<span class='fa fa-star checked'></span>";
                 echo "<span class='fa fa-star checked'></span>";
@@ -121,21 +123,16 @@ session_start();
                 echo "<p>Total Items: ". $storageAmount . "</p>";
                 $productID = $row["productID"];
                 echo "<form action='cameras.php?action=add&id=" . $productID . "&quant=' method='POST'>";
-
+                echo "<span>";
+                echo "<select class='selectContainer' name='quant'>";
+                echo "<option value='' selected>Quantity</option>";
+                for ($options = 1; $options <= 5; $options++) {
+                    echo "<option name='" . $options ."' value='" . $options . "'>" . $options . "</option>";
+                }
+                echo "</select></span>";
                 if ($storageAmount == 0) {
-                    echo "<span>";
-                    echo "<select class='selectContainer' name='quant'>";
-                    echo "<option value='' selected>0</option>";
-                    echo "</select></span>";
                     echo "<a class='btn bg-danger' name='no_inventory' id='myBtn'><i class='fa fa-shopping-cart'></i> No Inventory</a></span>";
                 } else {
-                    echo "<span>";
-                    echo "<select class='selectContainer' name='quant'>";
-                    echo "<option value='' selected>1</option>";
-                    for ($options = 2; $options <= $storageAmount; $options++) {
-                        echo "<option name='" . $options ."' value='" . $options . "'>" . $options . "</option>";
-                    }
-                    echo "</select></span>";
                     echo "<button class='btn bg-success btn-text-color' name='submit' type='submit'><i class='fa fa-shopping-cart'></i> Add to Cart</button></span>";
                 }
                 echo "</form>";
