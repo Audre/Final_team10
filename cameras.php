@@ -259,4 +259,7 @@ $ok_to_purchase = False;
 </script>
 
 </body>
+<footer>
+ <small>&copy; Copyright 2018, A&K Photography</small>
+</footer>
 </html>

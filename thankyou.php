@@ -92,65 +92,11 @@ session_start();
     </nav>
 </header>
 <main>
-    <?php
-    if (!empty($_GET["action"])) {
-        switch ($_GET["action"]) {
-            case "order":
-
-                if (!empty($_SESSION["cart"])) {
-                    $query_max = "SELECT MAX(orderID) FROM orders";
-                    $max_stmt = $conn->prepare($query_max);
-                    $max_stmt->execute();
-                    $max_result = $max_stmt->fetch();
-                    $orderID = $max_result[0] + 1;
-                    $userID = $_SESSION["userID"];
-                    $price = 0;
-                    foreach ($_SESSION["cart"] as $item) {
-
-                        $productID = $item["productID"];
-                        $quantity = $item["quantity"];
-                        $price = $item["price"];
-                        $now = new DateTime(null, new DateTimeZone("America/New_York"));
-                        $date = $now->format('Y-m-d');
-                        $gc_query = "SELECT giftcard_balance FROM users WHERE userID=" . $userID;
-                        $gc_stmt = $conn->prepare($gc_query);
-                        $gc_stmt->execute();
-                        $gc_balance = $gc_stmt->fetch();
-                        $total_gc_balance = $gc_balance[0] - $price;
-
-
-                        $query2 = "INSERT INTO orders (orderID, userID, productiD, quantity, price, date) 
-                                    VALUES(" . $orderID . ", " . $userID .", " . $productID . ", " . $quantity . ", " . $price . ", " . $date . ")";
-
-
-                        $user_query = "UPDATE users SET giftcard_balance =" . $total_gc_balance . " WHERE userID=" . $userID;
-
-
-                        if ($conn->query($query2) === FALSE || $conn->query($user_query) === FALSE) {
-                            echo "<div class=\"txt-heading\">There was an error. Your items were not purchased. </div>";
-                            break;
-
-                        }
-                    }
-
-                }
-                unset($_SESSION["cart"]);
-                echo "<div class=\"txt-heading\">Thank you! Your order has been placed! </div>";
-        }
-    } else {
-        echo "<div class=\"txt-heading\">There was an error. Your items were not purchased. </div>";
-        echo "<div><br/><br/><br/>";
-        echo "<div class=\"text-center\">";
-        echo "<a href=\"cart.php?action\"";
-        echo "class=\"btn-checkout\"><i class=\"fa fa-credit-card\"></i>Place Order</a>";
-        echo "</div>";
-        echo "</div>";
-    }
-
-
-    ?>
-
-
+   <?php echo "<div class=\"txt-heading\">Thank you! Your order has been placed! </div>";
+   ?>
 </main>
 </body>
+<footer>
+ <small>&copy; Copyright 2018, A&K Photography</small>
+</footer>
 </html>

@@ -127,4 +127,7 @@ session_start();
     </div>
 </main>
 </body>
+<footer>
+ <small>&copy; Copyright 2018, A&K Photography</small>
+</footer>
 </html>

@@ -204,7 +204,7 @@ session_start();
                                     marker.setMap(map);
                                 }
                             </script>
-                            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyChS1wSaaB_NbJB_V4gn6dcunJZwQer-C8&callback=myMap"></script>
+                            <script src="https://maps.googleapis.com/maps/api/js?callback=myMap"></script>
                         </div>
                     </div>
 
@@ -217,4 +217,7 @@ session_start();
 </main>
 
 </body>
+<footer>
+ <small>&copy; Copyright 2018, A&K Photography</small>
+</footer>
 </html>

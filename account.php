@@ -4,13 +4,6 @@ session_start();
 
 if (!isset($_SESSION["logged_in"])) {
     header("Location: login.php");
-} else {
-    $gc_query = "SELECT giftcard_balance FROM users WHERE userID=" . $_SESSION["userID"];
-    $gc_stmt = $conn->prepare($gc_query);
-    $gc_stmt->execute();
-    $gc_balance = $gc_stmt->fetch();
-
-    $_SESSION["giftcard_balance"] = $gc_balance[0];
 }
 
 ?>
@@ -293,8 +286,8 @@ if (!isset($_SESSION["logged_in"])) {
                             <div class="w3-twothird">
                                 <div class="w3-container w3-card w3-white w3-margin-bottom">
                                     <h2 class="w3-text-grey w3-padding-16"><i
-                                                class="fa fa-credit-card fa-fw w3-margin-right w3-xxlarge w3-text-teal">
-                                        </i>Orders</h2>
+                                                class="fa fa-credit-card fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Orders
+                                    </h2>
 
                                     <?php
 
@@ -522,4 +515,7 @@ if (!isset($_SESSION["logged_in"])) {
 
 
 </body>
+<footer>
+ <small>&copy; Copyright 2018, A&K Photography</small>
+</footer>
 </html>
