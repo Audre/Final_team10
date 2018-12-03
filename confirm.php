@@ -2,6 +2,9 @@
 require_once("Database.php");
 session_start();
 
+if (!isset($_SESSION["logged_in"])) {
+    header("Location: login.php");
+}
 
 ?>
 <!DOCTYPE html>
@@ -34,24 +37,23 @@ session_start();
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                        data-target="#bs-example-navbar-collapse-1">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand">A & K Photography</a>
+                <a class="navbar-brand">A & K Photo</a>
             </div>
-
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li><a href="index.php">Home <span class="sr-only">(current)</span></a></li>
-                    <li  id="Catalog">
+                    <li id="Catalog">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="catalog.php">Catalog
                             <span class="caret"></span></a>
                         <ul class="dropdown-menu" id="menu1">
                             <li><a href="catalog.php">Catalog</a></li>
+                            <li><a href="gallery.php">Gallery</a></li>
                             <li><a href="food.php">Food</a></li>
                             <li><a href="pets.php">Pets</a></li>
                             <li><a href="nature.php">Nature</a></li>
@@ -60,9 +62,9 @@ session_start();
                             <li><a href="romantic.php">Romantic</a></li>
                         </ul>
                     </li>
-                     <li><a href="about.php">About</a></li>
+                    <li><a href="about.php">About</a></li>
                     <li><a href="contact.php">Contact</a></li>
-                    <li><a href="gallery.php">Gallery</a></li>
+
                     <li id="Product">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="cameras.php">Products
                             <span class="caret"></span></a>
@@ -75,11 +77,11 @@ session_start();
                         </ul>
                     </li>
                     <li><a href="cart.php">Cart</a></li>
-                   
-                  
+
 
                     <?php
                     if (isset($_SESSION["logged_in"])) {
+                        echo "<li><a href='account.php'>Account</a></li>";
                         echo "<li><a href='logout.php'>Logout</a></li>";
                     } else {
                         echo "<li><a href=\"login.php\">Login</a></li>";
@@ -87,7 +89,7 @@ session_start();
                     }
                     ?>
                 </ul>
-        </div>
+            </div>
         </div>
     </nav>
 </header>
@@ -139,7 +141,7 @@ session_start();
                     <td style="text-align:center;"><?php echo "\xf0\x9f\x8d\x8d " . $item["price"]; ?></td>
                     <td style="text-align:center;"><?php echo "\xf0\x9f\x8d\x8d " . number_format($item_price, 2); ?></td>
                     <td style="text-align:center;"><a href="cart.php?action=remove&id=<?php echo $item["productID"]; ?>"
-                                                      class="btn bg-info"><i class="fa fa-trash"></i> Remove</a></td>
+                                                      class="btn btn-checkout"><i class="fa fa-trash"></i> Remove</a></td>
                 </tr>
                 <?php
                 $total_quantity += $item["quantity"];
@@ -162,27 +164,21 @@ session_start();
 
           
            <?php echo $_SESSION["giftcard_balance"]; ?>
+            <div class="container-checkout">
+                <h5 class="text-center">Gift Card Applied <i class="fa fa-gift"></i></h5>
+                <p class="text-center">Total Card Balance: <?php echo $_SESSION["giftcard_balance"];
+                    ?></p>
+                <p class="text-center">Current Charges: -<?php echo $total_price; ?></p>
+                <p class="text-center">New Balance: <?php echo $new_total; ?></p>
 
-
-          <input type="checkbox" checked="checked" name="sameadr"> Gift Card Applied <i class="fa fa-gift" style="color:navy;"></i> <br> 
-           Gift Card Balance: 
-           <?php echo $_SESSION["giftcard_balance"];
-           ?>
-           <br>
-           Total Cart Balance: - 
-           <?php 
-           echo $total_price;
-           ?>
-           <br>
-           New Gift Card Balance: 
-           <?php
-           echo $new_total;
-           ?>
-
-        </label>
+            </div>
+            <br/>
             <form action='cart.php?action=checkout' method='POST'>
+                <div class="text-center">
+                    <a href="thankyou.php" class='btn-checkout btn-primary ' name='submit' type='submit'><i class='fa fa-credit-card'></i>Place Order</a>
 
-          <a href="thankyou.php" class='btn btn-primary' name='submit' type='submit'><i class='fa fa-credit-card'></i>Place Order</a>
+                </div>
+
             </form>
         </div>
         <?php

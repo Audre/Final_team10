@@ -1,3 +1,8 @@
+<?php
+require_once("Database.php");
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
@@ -21,7 +26,7 @@
 
 
     </script>
-     <style>
+    <style>
         #Product:hover #menu{
             display: block;
             position: absolute;
@@ -37,24 +42,23 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                        data-target="#bs-example-navbar-collapse-1">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand">A & K Photography</a>
+                <a class="navbar-brand">A & K Photo</a>
             </div>
-
-          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li><a href="index.php">Home <span class="sr-only">(current)</span></a></li>
-                    <li  id="Catalog">
+                    <li id="Catalog">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="catalog.php">Catalog
                             <span class="caret"></span></a>
                         <ul class="dropdown-menu" id="menu1">
                             <li><a href="catalog.php">Catalog</a></li>
+                            <li><a href="gallery.php">Gallery</a></li>
                             <li><a href="food.php">Food</a></li>
                             <li><a href="pets.php">Pets</a></li>
                             <li><a href="nature.php">Nature</a></li>
@@ -65,7 +69,7 @@
                     </li>
                     <li><a href="about.php">About</a></li>
                     <li class="active"><a href="contact.php">Contact</a></li>
-                    <li><a href="gallery.php">Gallery</a></li>
+
                     <li id="Product">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="cameras.php">Products
                             <span class="caret"></span></a>
@@ -78,8 +82,11 @@
                         </ul>
                     </li>
                     <li><a href="cart.php">Cart</a></li>
+
+
                     <?php
                     if (isset($_SESSION["logged_in"])) {
+                        echo "<li><a href='account.php'>Account</a></li>";
                         echo "<li><a href='logout.php'>Logout</a></li>";
                     } else {
                         echo "<li><a href=\"login.php\">Login</a></li>";
@@ -87,7 +94,7 @@
                     }
                     ?>
                 </ul>
-        </div>
+            </div>
         </div>
     </nav>
 </header>

@@ -1,6 +1,11 @@
 <?php
 require_once("Database.php");
 session_start();
+
+if (!isset($_SESSION["logged_in"])) {
+    header("Location: login.php");
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,7 +41,7 @@ session_start();
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand">A & K Photography</a>
+                <a class="navbar-brand">A & K Photo</a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
@@ -46,6 +51,7 @@ session_start();
                             <span class="caret"></span></a>
                         <ul class="dropdown-menu" id="menu1">
                             <li><a href="catalog.php">Catalog</a></li>
+                            <li><a href="gallery.php">Gallery</a></li>
                             <li><a href="food.php">Food</a></li>
                             <li><a href="pets.php">Pets</a></li>
                             <li><a href="nature.php">Nature</a></li>
@@ -56,7 +62,7 @@ session_start();
                     </li>
                     <li><a href="about.php">About</a></li>
                     <li><a href="contact.php">Contact</a></li>
-                    <li><a href="gallery.php">Gallery</a></li>
+
                     <li id="Product">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="cameras.php">Products
                             <span class="caret"></span></a>
@@ -69,8 +75,11 @@ session_start();
                         </ul>
                     </li>
                     <li><a href="cart.php">Cart</a></li>
+
+
                     <?php
                     if (isset($_SESSION["logged_in"])) {
+                        echo "<li class='active'><a href='account.php'>Account</a></li>";
                         echo "<li><a href='logout.php'>Logout</a></li>";
                     } else {
                         echo "<li><a href=\"login.php\">Login</a></li>";
@@ -83,8 +92,11 @@ session_start();
     </nav>
 </header>
 <main>
+    <?php
+    if ($_SESSION["first_name"] == "admin") {
 
-    <!-- Page Container -->
+    ?>
+
     <div class="w3-content w3-margin-top" style="max-width:1400px;">
 
         <!-- The Grid -->
@@ -97,15 +109,18 @@ session_start();
                     <div class="w3-display-container">
                         <img src="images/blank-profile-picture.png" style="width:100%" alt="Avatar">
                         <div class="w3-display-bottomleft w3-container w3-text-black">
-                            <h2>Jane Doe</h2>
+                            <h2><?php echo $_SESSION["first_name"] . " " . $_SESSION["last_name"]; ?></h2>
                         </div>
                     </div>
                     <div class="w3-container">
-                        <p><i class="fa fa-user fa-fw w3-margin-right w3-large w3-text-teal"></i>Name</p>
+                        <p><i class="fa fa-user fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                            <?php echo $_SESSION["first_name"] . " " . $_SESSION["last_name"]; ?></p>
                         <p><i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>London, UK</p>
-                        <p><i class="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-teal"></i>ex@mail.com</p>
+                        <p><i class="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                            <?php echo $_SESSION["email"]; ?></p>
                         <p><i class="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>1224435534</p>
-                        <p><i class="fa fa-gift fa-fw w3-margin-right w3-large w3-text-teal"></i>Gift Card</p>
+                        <p><i class="fa fa-gift fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                            <?php echo $_SESSION["giftcard_balance"]; ?></p>
                         <hr>
                     </div>
                 </div><br>
@@ -115,160 +130,387 @@ session_start();
 
             <!-- Right Column -->
             <div class="w3-twothird">
-                <?php
-                $query = "SELECT * FROM orders WHERE userID='" . $_SESSION["userID"]. "'";
-                $stmt = $conn->prepare($query);
-                $num = $stmt->execute();
-//                print_r($num);
-                if ($num) {
-                    foreach ($stmt->fetchAll() as $k => $value) {
-                    }
-                    $row = $stmt->fetchAll();
-                    print_r($row);
-                    $orderID = $row[0]["orderID"];
-                    $date = $row[0]["date"];
-                    echo "<div class=\"w3-container w3-card w3-white w3-margin-bottom\">";
-                    echo "<h2 class=\"w3-text-grey w3-padding-16\">";
-                    echo "<i class=\"fa fa-credit-card fa-fw w3-margin-right w3-xxlarge w3-text-teal\"></i>Orders</h2>";
-                    echo "<div class=\"w3-container\">";
-                    echo "<h6 class=\"w3-text-teal\"><i class=\"fa fa-calendar fa-fw w3-margin-right\">";
-                    echo "</i> " . $date . " <span class=\"w3-tag w3-teal w3-round\"></span></h6>";
-                    for ($i = 0; $i < $num; $i++) {
-                        $order = $row[$i];
-                        $productID = $order["productID"];
-                        $quantity = $order["quantity"];
-                        $price = $order["price"];
-                        $product_name = "";
-                        $product_price = "";
-                        $product_details = "";
-                        $query2 = "SELECT * FROM products WHERE productID='" . $productID. "'";
-                        $product_statement = $conn->prepare($query2);
-                        $num2 = $product_statement->execute();
-                        if ($num2) {
-                            $product_info = $product_statement->fetch();
-                            $product_name = $product_info["name"];
+                <div class="w3-container w3-card w3-white w3-margin-bottom">
+                    <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-credit-card fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Orders</h2>
+
+                    <?php
+                    $user_query = "SELECT DISTINCT userID FROM orders";
+                    $sql = $conn->prepare($user_query);
+                    $sql->execute();
+                    $users = $sql->fetchAll();
+                    //$user_ids = [];
+                    foreach ($users as $user) {
+                        $query = "SELECT DISTINCT orderID FROM orders WHERE userID=" . $user["userID"];
+                        $stmt = $conn->prepare($query);
+                        $stmt->execute();
+                        $num = $stmt->rowCount();
+                        if ($num) {
+                            for ($i = 0; $i < $num; $i++) {
+                                $result = $stmt->fetchAll();
+                                foreach ($result as $order) {
+                                    $user_id_query = "SELECT * FROM users WHERE userID=" . $user["userID"];
+                                    $user_stmt = $conn->prepare($user_id_query);
+                                    $user_stmt->execute();
+                                    $user_result = $user_stmt->fetch();
+                                    echo "<div class=\"w3-container\">";
+                                    echo "<h5 class=\"w3-opacity\"><b>Order Number: " . $order[0] . "</b></h5>";
+                                    echo "<h5 class=\"w3-opacity\"><b>Name: " . $user_result["first_name"] . " " . $user_result["last_name"] . "</b></h5>";
+                                    echo "<h6 class=\"w3-text-teal\"><i class=\"fa fa-calendar fa-fw w3-margin-right\">";
+
+                                    $query2 = "SELECT * FROM orders WHERE orderID=" . $order[$i];
+                                    $stmt2 = $conn->prepare($query2);
+                                    $stmt2->execute();
+                                    $orders = $stmt2->fetchAll();
+                                    $products = [];
+                                    $quantity = [];
+                                    $price = [];
+                                    $date = $orders[0]["date"];
+                                    $total_cost = 0;
+                                    //print_r($orders);
+                                    echo "<br/>";
+                                    echo "</i>". $date . "<span class=\"w3-tag w3-teal w3-round\"></span></h6>";
+
+                                    foreach ($orders as $item) {
+                                        $total_order = array($item["productID"], $item["quantity"], $item["price"]);
+
+                                        array_push($products, $item["productID"]);
+                                        array_push($quantity, $item["quantity"]);
+                                        array_push($price, $item["price"]);
+
+
+                                        for ($j = 0; $j < count($products); $j++) {
+                                            $query3 = "SELECT * FROM products WHERE productID=" . $total_order[0];
+                                            $stmt3 = $conn->prepare($query3);
+                                            $stmt3->execute();
+                                            $product_info = $stmt3->fetch();
+                                            echo "<div class='row'>";
+                                            echo "<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12 w3-opacity account-item' >Item: " . $product_info["name"] . "</div></div>";
+
+                                        }
+                                        echo "<div class='row'>";
+                                        echo "<div class='col-lg-offset-1 col-lg-4 col-md-4 col-sm-4 col-xs-12 w3-opacity'>Quantity: " . $item["quantity"] .  "</div>";
+                                        echo "<div class='col-lg-4 col-md-4 col-sm-4 col-xs-12 w3-opacity'>Price: " . $item["price"] .  "</div>";
+                                        echo "</div>";
+                                        echo "<br/>";
+                                        $total_cost += $item["price"];
+
+                                        $products = [];
+                                    }
+                                    echo "<p class='account-total w3-opacity'>Total Price: " . $total_cost . "</p>";
+                                    echo "<hr>";
+                                    echo "</div>";
+                                }
+                            }
+                            echo "</div>";
+
+                        } else {
+                            echo "<div class=\"w3-container\">";
+                            echo "<h5 class=\"w3-opacity\"><b>No Orders</b></h5>";
+                            echo "<hr>";
+                            echo "</div>";
+                            echo "</div>";
+
                         }
-                        echo "<h5 class=\"w3-opacity\"><b>Product: " . $product_name ."</b></h5>";
-                        echo "<p class='account'>Quantity: ". $quantity . "<span class='price account'>". $price ." </span></p>";
-                        echo "<hr>";
-                        echo "</div>";
-                        echo "<div class=\"w3-container\">";
-                        echo "<h5 class=\"w3-opacity\"><b>Web Developer / something.com</b></h5>";
-                        echo "<h6 class=\"w3-text-teal\"><i class=\"fa fa-calendar fa-fw w3-margin-right\"></i>Mar 2012 - Dec 2014</h6>";
-                        echo "<p>Consectetur adipisicing elit. Praesentium magnam consectetur vel in deserunt aspernatur est reprehenderit sunt hic. Nulla tempora soluta ea et odio, unde doloremque repellendus iure, iste.</p>";
-                        echo "<hr>";
-                        echo "</div>";
-                        echo "<div class=\"w3-container\">";
-                        echo "<h5 class=\"w3-opacity\"><b>Graphic Designer / designsomething.com</b></h5>";
-                        echo "<h6 class=\"w3-text-teal\"><i class=\"fa fa-calendar fa-fw w3-margin-right\"></i>Jun 2010 - Mar 2012</h6>";
-                        echo "<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p><br>";
-                        echo "</div>";
-                        echo "</div>";
+
                     }
-                } else {
-                    echo "No orders";
-                }
-                ?>
+                    echo "<div class=\"w3-container w3-card w3-white w3-margin-bottom\">";
+                    echo "<h2 class=\"w3-text-grey w3-padding-16\"><i class=\"fa fa-credit-card fa-fw w3-margin-right w3-xxlarge w3-text-teal\"></i>Inventory</h2>";
 
-<!--                <div class="w3-container w3-card w3-white w3-margin-bottom">-->
-<!--                    <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-credit-card fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Orders</h2>-->
-<!--                    <div class="w3-container">-->
-<!--                        <h5 class="w3-opacity"><b>Front End Developer / w3schools.com</b></h5>-->
-<!--                        <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Jan 2015 - <span class="w3-tag w3-teal w3-round">Current</span></h6>-->
-<!--                        <p>Lorem ipsum dolor sit amet. Praesentium magnam consectetur vel in deserunt aspernatur est reprehenderit sunt hic. Nulla tempora soluta ea et odio, unde doloremque repellendus iure, iste.</p>-->
-<!--                        <hr>-->
-<!--                    </div>-->
-<!--                    <div class="w3-container">-->
-<!--                        <h5 class="w3-opacity"><b>Web Developer / something.com</b></h5>-->
-<!--                        <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Mar 2012 - Dec 2014</h6>-->
-<!--                        <p>Consectetur adipisicing elit. Praesentium magnam consectetur vel in deserunt aspernatur est reprehenderit sunt hic. Nulla tempora soluta ea et odio, unde doloremque repellendus iure, iste.</p>-->
-<!--                        <hr>-->
-<!--                    </div>-->
-<!--                    <div class="w3-container">-->
-<!--                        <h5 class="w3-opacity"><b>Graphic Designer / designsomething.com</b></h5>-->
-<!--                        <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Jun 2010 - Mar 2012</h6>-->
-<!--                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p><br>-->
-<!--                    </div>-->
-<!--                </div>-->
+                    $inventory_query = "SELECT * FROM products";
+                    $inventory_stmt = $conn->prepare($inventory_query);
+                    $inventory_stmt->execute();
+                    $inventory = $inventory_stmt->fetchAll();
+                    foreach ($inventory as $item) {
+                        echo "<div class=\"w3-container\">";
+                        echo "<h5 class=\"w3-opacity\"><b>Item: " . $item["name"] . "</b></h5>";
+                        if ($item["unitsInStorage"] < 5) {
+                            echo "<p class='text-danger low-inventory'>Items in Storage: " . $item["unitsInStorage"] . "</p>";
+                            echo "<a class='btn btn-danger myBtn' name='add_amount' id='".$item["productID"] ."'>Add Inventory</a>";
+                        } else {
+                            echo "<p>Items in Storage: " . $item["unitsInStorage"] . "</p>";
+                        }
 
-                <div class="w3-container w3-card w3-white">
-                    <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Saved Items for Later</h2>
-                    <div class="w3-container">
-                        <h5 class="w3-opacity"><b>W3Schools.com</b></h5>
-                        <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Forever</h6>
-                        <p>Web Development! All I need to know in one place</p>
-                        <hr>
+                        echo "<hr>";
+                        echo "</div>";
+
+
+                    }
+
+
+                    echo "</div>";
+
+                    echo "</div>";
+
+
+                    } else {
+
+
+                    ?>
+
+                    <!-- Page Container -->
+                    <div class="w3-content w3-margin-top" style="max-width:1400px;">
+
+                        <!-- The Grid -->
+                        <div class="w3-row-padding">
+
+                            <!-- Left Column -->
+                            <div class="w3-third">
+
+                                <div class="w3-white w3-text-grey w3-card-4">
+                                    <div class="w3-display-container">
+                                        <img src="images/blank-profile-picture.png" style="width:100%" alt="Avatar">
+                                        <div class="w3-display-bottomleft w3-container w3-text-black">
+                                            <h2><?php echo $_SESSION["first_name"] . " " . $_SESSION["last_name"]; ?></h2>
+                                        </div>
+                                    </div>
+                                    <div class="w3-container">
+                                        <p><i class="fa fa-user fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                                            <?php echo $_SESSION["first_name"] . " " . $_SESSION["last_name"]; ?></p>
+                                        <p><i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>London, UK
+                                        </p>
+                                        <p><i class="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                                            <?php echo $_SESSION["email"]; ?></p>
+                                        <p><i class="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>1224435534
+                                        </p>
+                                        <p><i class="fa fa-gift fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                                            <?php echo $_SESSION["giftcard_balance"]; ?></p>
+                                        <hr>
+                                    </div>
+                                </div>
+                                <br>
+
+                                <!-- End Left Column -->
+                            </div>
+
+                            <!-- Right Column -->
+                            <div class="w3-twothird">
+                                <div class="w3-container w3-card w3-white w3-margin-bottom">
+                                    <h2 class="w3-text-grey w3-padding-16"><i
+                                                class="fa fa-credit-card fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Orders
+                                    </h2>
+
+                                    <?php
+
+                                    $query = "SELECT DISTINCT orderID FROM orders WHERE userID=" . $_SESSION["userID"];
+                                    $stmt = $conn->prepare($query);
+                                    $stmt->execute();
+                                    $num = $stmt->rowCount();
+                                    if ($num) {
+                                        for ($i = 0; $i < $num; $i++) {
+                                            $result = $stmt->fetchAll();
+                                            foreach ($result as $order) {
+                                                echo "<div class=\"w3-container\">";
+                                                echo "<h5 class=\"w3-opacity\"><b>Order Number: " . $order[0] . "</b></h5>";
+                                                echo "<h6 class=\"w3-text-teal\"><i class=\"fa fa-calendar fa-fw w3-margin-right\">";
+
+                                                $query2 = "SELECT * FROM orders WHERE orderID=" . $order[$i];
+                                                $stmt2 = $conn->prepare($query2);
+                                                $stmt2->execute();
+                                                $orders = $stmt2->fetchAll();
+                                                $products = [];
+                                                $quantity = [];
+                                                $price = [];
+                                                $date = $orders[0]["date"];
+                                                $total_cost = 0;
+                                                //print_r($orders);
+                                                echo "<br/>";
+                                                echo "</i>" . $date . "<span class=\"w3-tag w3-teal w3-round\"></span></h6>";
+
+                                                foreach ($orders as $item) {
+                                                    $total_order = array($item["productID"], $item["quantity"], $item["price"]);
+
+                                                    array_push($products, $item["productID"]);
+                                                    array_push($quantity, $item["quantity"]);
+                                                    array_push($price, $item["price"]);
+
+
+                                                    for ($j = 0; $j < count($products); $j++) {
+                                                        $query3 = "SELECT * FROM products WHERE productID=" . $total_order[0];
+                                                        $stmt3 = $conn->prepare($query3);
+                                                        $stmt3->execute();
+                                                        $product_info = $stmt3->fetch();
+                                                        echo "<div class='row'>";
+                                                        echo "<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12 w3-opacity account-item' >Item: " . $product_info["name"] . "</div></div>";
+
+                                                    }
+                                                    echo "<div class='row'>";
+                                                    echo "<div class='col-lg-offset-1 col-lg-4 col-md-4 col-sm-4 col-xs-12 w3-opacity'>Quantity: " . $item["quantity"] . "</div>";
+                                                    echo "<div class='col-lg-4 col-md-4 col-sm-4 col-xs-12 w3-opacity'>Price: " . $item["price"] . "</div>";
+                                                    echo "</div>";
+                                                    echo "<br/>";
+                                                    $total_cost += $item["price"];
+
+                                                    $products = [];
+                                                }
+                                                echo "<p class='account-total w3-opacity'>Total Price: " . $total_cost . "</p>";
+                                                echo "<hr>";
+                                                echo "</div>";
+                                            }
+                                        }
+
+                                    } else {
+                                        echo "<div class=\"w3-container\">";
+                                        echo "<h5 class=\"w3-opacity\"><b>No Orders</b></h5>";
+                                        echo "<hr>";
+                                        echo "</div>";
+                                        echo "</div>";
+
+                                    }
+                                    }
+
+                                    ?>
+
+                                </div>
+
+                                <!--                    <div class="w3-container">-->
+                                <!--                        <h5 class="w3-opacity"><b>Web Developer / something.com</b></h5>-->
+                                <!--                        <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Mar 2012 - Dec 2014</h6>-->
+                                <!--                        <p>Consectetur adipisicing elit. Praesentium magnam consectetur vel in deserunt aspernatur est reprehenderit sunt hic. Nulla tempora soluta ea et odio, unde doloremque repellendus iure, iste.</p>-->
+                                <!--                        <hr>-->
+                                <!--                    </div>-->
+                                <!--                    <div class="w3-container">-->
+                                <!--                        <h5 class="w3-opacity"><b>Graphic Designer / designsomething.com</b></h5>-->
+                                <!--                        <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Jun 2010 - Mar 2012</h6>-->
+                                <!--                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p><br>-->
+                                <!--                    </div>-->
+
+
+
+                                <!--                <div class="w3-container w3-card w3-white w3-margin-bottom">-->
+                                <!--                    <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-credit-card fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Orders</h2>-->
+                                <!--                    <div class="w3-container">-->
+                                <!--                        <h5 class="w3-opacity"><b>Front End Developer / w3schools.com</b></h5>-->
+                                <!--                        <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Jan 2015 - <span class="w3-tag w3-teal w3-round">Current</span></h6>-->
+                                <!--                        <p>Lorem ipsum dolor sit amet. Praesentium magnam consectetur vel in deserunt aspernatur est reprehenderit sunt hic. Nulla tempora soluta ea et odio, unde doloremque repellendus iure, iste.</p>-->
+                                <!--                        <hr>-->
+                                <!--                    </div>-->
+                                <!--                    <div class="w3-container">-->
+                                <!--                        <h5 class="w3-opacity"><b>Web Developer / something.com</b></h5>-->
+                                <!--                        <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Mar 2012 - Dec 2014</h6>-->
+                                <!--                        <p>Consectetur adipisicing elit. Praesentium magnam consectetur vel in deserunt aspernatur est reprehenderit sunt hic. Nulla tempora soluta ea et odio, unde doloremque repellendus iure, iste.</p>-->
+                                <!--                        <hr>-->
+                                <!--                    </div>-->
+                                <!--                    <div class="w3-container">-->
+                                <!--                        <h5 class="w3-opacity"><b>Graphic Designer / designsomething.com</b></h5>-->
+                                <!--                        <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Jun 2010 - Mar 2012</h6>-->
+                                <!--                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p><br>-->
+                                <!--                    </div>-->
+                                <!--                </div>-->
+
+                                <!--                <div class="w3-container w3-card w3-white">-->
+                                <!--                    <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Saved Items for Later</h2>-->
+                                <!--                    <div class="w3-container">-->
+                                <!--                        <h5 class="w3-opacity"><b>W3Schools.com</b></h5>-->
+                                <!--                        <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Forever</h6>-->
+                                <!--                        <p>Web Development! All I need to know in one place</p>-->
+                                <!--                        <hr>-->
+                                <!--                    </div>-->
+                                <!--                    <div class="w3-container">-->
+                                <!--                        <h5 class="w3-opacity"><b>London Business School</b></h5>-->
+                                <!--                        <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>2013 - 2015</h6>-->
+                                <!--                        <p>Master Degree</p>-->
+                                <!--                        <hr>-->
+                                <!--                    </div>-->
+                                <!--                    <div class="w3-container">-->
+                                <!--                        <h5 class="w3-opacity"><b>School of Coding</b></h5>-->
+                                <!--                        <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>2010 - 2013</h6>-->
+                                <!--                        <p>Bachelor Degree</p><br>-->
+                                <!--                    </div>-->
+                                <!--                </div>-->
+
+                                <!-- End Right Column -->
+                            </div>
+
+                            <!-- End Grid -->
+                        </div>
+
+                        <!-- End Page Container -->
                     </div>
-                    <div class="w3-container">
-                        <h5 class="w3-opacity"><b>London Business School</b></h5>
-                        <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>2013 - 2015</h6>
-                        <p>Master Degree</p>
-                        <hr>
+
+                    <div class="modal fade" id="myModal" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Add to Inventory</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <br/>
+                                    <form method="post" id="insert_form">
+                                        <label for="product" >Product ID: <input id="productID" name="productID" type="number" max="5"/></label>
+                                        <label for="amount">Amount: <input id="unitsInStorage" type="number" name="unitsInStorage"/> </label>
+
+                                        <button type="submit" id="add" name="add_to_inventory" value="" class="btn btn-checkout">Add to Inventory</button>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="close">Close</button>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
-                    <div class="w3-container">
-                        <h5 class="w3-opacity"><b>School of Coding</b></h5>
-                        <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>2010 - 2013</h6>
-                        <p>Bachelor Degree</p><br>
-                    </div>
-                </div>
-
-                <!-- End Right Column -->
-            </div>
-
-            <!-- End Grid -->
-        </div>
-
-        <!-- End Page Container -->
-    </div>
 
 
 </main>
 <script>
     $(document).ready(function(){
-        // create variable to hold the current modal window
-        var activeWindow;
-        $('a.modalLink').click(function(e){
-            // cancel the default link behaviour
-            e.preventDefault();
-            // find the href of the link that was clicked to use as an id
-            var id = $(this).attr('href');
-            // assign the window with matching id to the activeWindow variable, move it to the center of the screen and fade in
-            activeWindow = $('.window#' + id)
-                .css('opacity', '0') // set to an initial 0 opacity
-                .css('top', '50%') // position vertically at 50%
-                .css('left', '50%') // position horizontally at 50%
-                .fadeTo(500, 1); // fade to an opacity of 1 (100%) over 500 milliseconds
-            // create blind and fade in
-            $('#modal')
-                .append('<div id="blind" />') // create a <div> with an id of 'blind'
-                .find('#blind') // select the div we've just created
-                .css('opacity', '0') // set the initial opacity to 0
-                .fadeTo(500, 0.8) // fade in to an opacity of 0.8 (80%) over 500 milliseconds
-                .click(function(e){
-                    closeModal(); // close modal if someone clicks anywhere on the blind (outside of the window)
-                });
+        $(".myBtn").click(function(){
+            $("#myModal").modal({backdrop: false });
         });
-        $('a.close').click(function(e){
-            // cancel default behaviour
-            e.preventDefault();
-            // call the closeModal function passing this close button's window
-            closeModal();
+        $("body").on("click", ".modal-dialog", function(e) {
+            if ($(e.target).hasClass('modal-dialog')) {
+                var hidePopup = $(e.target.parentElement).attr('id');
+                $('#' + hidePopup).modal('hide');
+            }
         });
-        function closeModal()
-        {
-            // fade out window and then move back to off screen when fade completes
-            activeWindow.fadeOut(250, function(){ $(this).css('top', '-1000px').css('left', '-1000px'); });
-            // fade out blind and then remove it
-            $('#blind').fadeOut(250,    function(){ $(this).remove(); });
-        }
+
+        $(document).on('submit','#insert_form',function(e) {
+            var data = $("#productID").serialize();
+            var data2 = $("#unitsInStorage").serialize();
+
+            $.ajax({
+                data: {data, data2},
+                type: "post",
+                url: "add_inventory.php",
+                success: function(data, data2){
+                    alert("Data: " + data, data2);
+                }
+            });
+        });
+
+        $(document).on('click', "#1", function () {
+            $("#productID").val("1");
+        });
+
+        $(document).on('click', "#2", function () {
+            $("#productID").val("2");
+        });
+
+        $(document).on('click', "#3", function () {
+            $("#productID").val("3");
+        });
+
+        $(document).on('click', "#4", function () {
+            $("#productID").val("4");
+        });
+
+        $(document).on('click', "#5", function () {
+            $("#productID").val("5");
+        });
+
+        $(document).on('submit', "#insert_form", function () {
+            location.reload();
+
+        });
+
+
+
+
+
     });
-    // When the user clicks anywhere outside of the modal, close it
-    var modal = document.getElementById('ticketModal');
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
+
 </script>
 
 
